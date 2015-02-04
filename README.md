@@ -1,15 +1,16 @@
 ## Radiance-Benchmark4
 
 A well-used benchmark scene for the Radiance pseudo-radiosity renderer
+
 =========================================================================
 
-'
-    Mark Stock <mstock@umich.edu>
-    James Lee <james@blastwave.org>
-    Guy Vaessen <guy.vaessen@gmail.com>
-    2005-08-24
-    2015-02-04
-'
+
+'    Mark Stock <mstock@umich.edu>'
+'    James Lee <james@blastwave.org>'
+'    Guy Vaessen <guy.vaessen@gmail.com>'
+'    2005-08-24'
+'    2015-02-04'
+
 
 Persian rug from [persia.org](http://persia.org/Images/Persian_Carpet/saruq_jpg1.html) is used without permission.
 
