@@ -5,12 +5,9 @@ A well-used benchmark scene for the Radiance pseudo-radiosity renderer
 =========================================================================
 
 
-'    Mark Stock <mstock@umich.edu>'
-'    James Lee <james@blastwave.org>'
-'    Guy Vaessen <guy.vaessen@gmail.com>'
-'    2005-08-24'
-'    2015-02-04'
-
+    Mark Stock <mstock@umich.edu>
+    James Lee <james@blastwave.org>
+    Guy Vaessen <guy.vaessen@gmail.com>
 
 Persian rug from [persia.org](http://persia.org/Images/Persian_Carpet/saruq_jpg1.html) is used without permission.
 
@@ -90,20 +87,19 @@ Then, continue with the data collection:
       * compiler version
       * compiler options (only if you changed them)
 
-4. Mail the information to me (markjstock@gmail.com)
+4. Mail the information to me (markjstock@gmail.com) or edit the rad_bench.html file and issue a push request.
 
 
-Thank you! Changes will appear on the [Radiance Benchmark Results Page](http://markjstock.org/pages/rad_bench.html).
+Thank you! A list of all benchmarks is in the rad_bench.html file, which is online at [http://markjstock.org/pages/rad_bench.html](http://markjstock.org/pages/rad_bench.html).
+
 
 ### Pre-github changes
-'
-2010-12-01  MJS  reworked Makefile and options so that same code will
+    2010-12-01  MJS  reworked Makefile and options so that same code will
                  work on any version of Radiance going back ~5 years
-2011-03-24  MJS  removed "-pm 0.0" from optionsbase because rpiece throws
+    2011-03-24  MJS  removed "-pm 0.0" from optionsbase because rpiece throws
                  an error in 4R1 
-2013-10-14  MJS  Added Windows batch file and "options" file from Guy
+    2013-10-14  MJS  Added Windows batch file and "options" file from Guy
                  Vaessen, also converted "cat" commands to "xform".
-2015-02-04  MJS  Fixed bug in Makefile on OSX, changed smp defaults to
+    2015-02-04  MJS  Fixed bug in Makefile on OSX, changed smp defaults to
                  4 cpus and 64 rows, reverted sky back to original
-'
 
