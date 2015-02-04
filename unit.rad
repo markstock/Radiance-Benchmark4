@@ -1,0 +1,12 @@
+!xform ehall.rad
+!xform -rz 180 ehall.rad
+!xform nhall.rad
+!xform -rz 180 nhall.rad
+!xform intersect.rad
+
+# now, add some angled mirrors
+mirrormat polygon nmirror 0 0 12
+-1.5 10 0  1.5 9.8 0  1.5 9.8 2.5  -1.5 10 2.5
+
+mirrormat polygon smirror 0 0 12
+-1.5 -10 0  -1.5 -10 2.5  1.5 -9.8 2.5  1.5 -9.8 0

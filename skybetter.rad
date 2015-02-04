@@ -1,0 +1,7 @@
+# this is a more accurate sky, but we must use the original (sky.rad) for the benchmark
+!gensky 08 18 9.5
+
+skyfunc glow skydome
+0 0 4  1 1 1 0
+skydome source sky
+0 0 4  0 0 1  190

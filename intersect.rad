@@ -1,0 +1,27 @@
+# the east hallway out of a rectangular intersection
+
+#floormat polygon ifloor 0 0 12
+#-1.5 -1 0  1.5 -1 0  1.5 1 0  -1.5 1 0
+
+ceilmat polygon nbevel 0 0 12
+-1.5 1 2.5  1.5 1 2.5  1 0.5 3.5  -1 0.5 3.5
+
+ceilmat polygon ebevel 0 0 12
+1.5 1 2.5  1.5 -1 2.5  1 -0.5 3.5  1 0.5 3.5
+
+ceilmat polygon sbevel 0 0 12
+1.5 -1 2.5  -1.5 -1 2.5  -1 -0.5 3.5  1 -0.5 3.5
+
+ceilmat polygon wbevel 0 0 12
+-1.5 -1 2.5  -1.5 1 2.5  -1 0.5 3.5  -1 -0.5 3.5
+
+# either cap the skylight
+#ceilmat polygon skylight 0 0 12
+#-1 0.5 3.5  1 0.5 3.5  1 -0.5 3.5  -1 -0.5 3.5
+
+# or open it up to sunlight
+void glass glassmat 0 0 3
+0.5 0.5 0.5
+
+glassmat polygon skylight 0 0 12
+-1 0.5 3.5  1 0.5 3.5  1 -0.5 3.5  -1 -0.5 3.5

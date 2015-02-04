@@ -1,0 +1,20 @@
+# a lens
+
+void dielectric lc
+0 0 5  0.8 0.8 0.8  1.5 0
+
+lc mesh thelens
+1 lens.msh
+0 0
+
+void antimatter antiglass
+1 lc 0 0
+
+antiglass cylinder anticyl
+0 0 7  0 0 -0.2  0 0 0.2  0.4
+
+antiglass ring anticaptop
+0 0 8  0 0 0.2  0 0 1  0 0.4
+
+antiglass ring anticapbottom
+0 0 8  0 0 -0.2  0 0 -1  0 0.4

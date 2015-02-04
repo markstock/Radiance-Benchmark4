@@ -1,0 +1,20 @@
+#!/bin/sh
+
+[ -z "$NCPU" ] && NCPU=4
+[ -z "$COLS" ] && COLS=1
+[ -z "$ROWS" ] && ROWS=64
+
+echo $COLS $ROWS > syncfile
+rm -f pp
+
+while [ "$NCPU" -gt 0 ]
+do
+        echo "running proc $NCPU"
+        rpiece -v -PP pp -F syncfile @viewpoint @options @args &
+        NCPU=`expr $NCPU - 1`
+done
+wait
+
+rm -f syncfile pp
+
+exit 0

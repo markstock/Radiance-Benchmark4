@@ -1,0 +1,4258 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Radiance Benchmark Test</title>
+
+        <script type="text/javascript" charset="utf-8" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+				$('#table_id_serial').dataTable();
+				$('#table_id_smp').dataTable();
+			} );
+		</script>
+
+		<style type="text/css" media="screen">
+			table { 
+				font: normal 11px/100% Verdana, Tahoma, sans-serif;  
+				border-collapse: collapse;
+			}
+			td { 
+				border-collapse: collapse; 
+				vertical-align: top; 
+			}
+		</style>
+		<link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+	</head>
+
+<body>
+<h2>
+<a href="../radmisc/bench4.png"><img src="../radmisc/bench4_100.png"></a>
+ Radiance Benchmark Test</h2>
+<hr>
+
+<p>
+Tabulated below are run times for the <b>rpict</b> step of the process
+involved in making an accurate rendering with
+<a href="http://www.radiance-online.org/">Radiance</a>.
+This test was designed mainly to exercise the ambient calculation
+portion of Radiance, but includes other types of commonly-used
+elements, namely daylighting, mesh primitive, antimatter, alias,
+brightfunc, and colorpict.
+It supports parallel computers (SMP only) via rpiece,
+though it may be exteneded to support workstation clusters in the future.
+</p>
+<p>
+<a href="http://luxal.eu/resources/radiance/benchmark.shtml">More benchmarks at LUXAL</a>
+<a href="http://markjstock.org/pages/rad_bench_old.html">Go to the old benchmark page.</a>
+</p>
+
+<h4>Instructions</h4>
+<ol>
+<li>You must download and build Radiance, or have the Radiance
+    distribution on the machine you wish to benchmark.
+    Download the Radiance distribution from the "download
+    Radiance" page of the <a href="http://www.radiance-online.org/"> Radiance Online</a> site.<p>
+</li><li>Download <a href="http://markjstock.org/radmisc/bench4.zip">bench4.zip</a> and run 
+    <pre>unzip bench4.zip</pre>
+    to create the <em>bench4</em> directory.<p>
+</li><li>The complete instructions are in the <em>README</em> file.
+    Most users just need to run
+    <pre>make</pre>
+    and read the results at the end of the output.
+    SMP users using the bash shell can run one of the following:
+    <pre>NCPU=2; make smp</pre>
+    <pre>export NCPU=2; make smp</pre>
+    to run the benchmark on two available CPUs.
+</li></ol>
+
+<h4>Parallel tests</h4>
+<p>
+Though it appears difficult
+to create an <b>rpiece</b> benchmark with timing routines that will
+return comparable timing accuracy on all platforms, I recognize the 
+interest such results may have to the community. Please submit any
+SMP results that you may have and they will be posted at the
+<a href="#smp_results">bottom of the page</a>.
+</p>
+
+<h4>Notes</h4>
+<p>
+<ul>
+<li>As of Dec 2010, the Makefile has been modified to work correctly and consistently across any version of Radiance from the last 5-10 years.
+<li>CPUs from 2009 and later are likely to run at clock speeds different than their rated speeds. This is because manufacturers are now including dynamic overclocking on the chip, which sets the clock speed according to the thermal load and not the rated and advertised speed. For example, a single-thread job on an otherwise-unloaded 2.5 GHz 4-core machine might run at closer to 3.0 GHz, while a 4-thread job runs at the rated 2.5 GHz. Since we cannot accurately discertain the true clock speed for any given test, the clock speeds listed below are the standard or rated speeds given by the manufacturer, and not the actual internal clock speed used during the test. Naturally, if you purposefully overclock your machine, please report the effective standard clock speed, not the base speed.
+<li>The default SMP job now uses one column and 64 rows. This seems to produce the fastest times for a wide variety of machines.
+</ul>
+</p>
+<h4>Serial Benchmark Results</h4>
+
+<table id="table_id_serial" class="display compact" border="0" cellpadding="3" valign="top">
+
+<thead>
+<tr class="header">
+<th><b>rpict</b> time<br>(user)</th>
+<th>Processor</th>
+<th><b>Total</b><br>CPUs/<br>cores</th>
+<th>Clock speed</th>
+<th>Cache/<br>proc</th>
+<th>OS/kernel</th>
+<th>Radiance Version</th>
+<th>Compiler</th>
+<th>Compile options</th>
+<th>Results</th>
+<th>Date</th>
+<th>Submitter</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr class="intel">
+<td>1174.08</td>
+<td>Intel Xeon E5-2670</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -march=native</td>
+<td>576005674 rays</td>
+<td>2015-01-09</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1170.31</td>
+<td>Intel Xeon E5-2670</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>576005674 rays</td>
+<td>2015-01-08</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1216.14</td>
+<td>Intel Xeon E5-2670</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.8.3</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>573588063 rays</td>
+<td>2015-01-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1235.54</td>
+<td>Intel Xeon E5-2670</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.4.7</td>
+<td>-O2 -funroll-loops -ffast-math</td>
+<td>579706467 rays</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>890.56</td>
+<td>Intel Core i7-3770K</td>
+<td>1/4</td>
+<td>4.2/4.7 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2a (64bit official NREL build)</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>687226990 rays</td>
+<td>2014-11-16</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>818.84</td>
+<td>Intel Core i7-3770K</td>
+<td>1/4</td>
+<td>4.2/4.7 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2.1 (64bit official NREL build)</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>583477507 rays</td>
+<td>2014-11-16</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>773.50</td>
+<td>Intel Core i7-4790K</td>
+<td>1/4</td>
+<td>4.6/4.6 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2a (64bit official NREL build)</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>687226990 rays</td>
+<td>2014-11-17</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>742.77</td>
+<td>Intel Core i7-4790K</td>
+<td>1/4</td>
+<td>4.6/4.6 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2.1 (64bit official NREL build)</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>576103806 rays</td>
+<td>2014-11-17</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>759.33</td>
+<td>Intel Core i7-4790K</td>
+<td>1/4</td>
+<td>4.6/4.6 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2.1</td>
+<td>Gcc 4.8.2</td>
+<td>-Ofast</td>
+<td>583477507 rays</td>
+<td>2014-11-17</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>738.91</td>
+<td>Intel Core i7-4790K</td>
+<td>1/4</td>
+<td>4.6/4.6 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2.1</td>
+<td>Gcc 4.8.2</td>
+<td>-march=native -Ofast</td>
+<td>586149709 rays</td>
+<td>2014-11-17</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>722.64</td>
+<td>Intel Core i7-4790K</td>
+<td>1/4</td>
+<td>4.6/4.6 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2.1</td>
+<td>Gcc 4.9.2</td>
+<td>-march=native -Ofast</td>
+<td>584381456 rays</td>
+<td>2014-11-17</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>764.63</td>
+<td>Intel i7-5960X</td>
+<td>1/8</td>
+<td>4.5 GHz (OC)</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>576466325 rays</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>906.97</td>
+<td>Intel Core i7-4771</td>
+<td>1/4</td>
+<td>3.5/3.9 GHz</td>
+<td>8 MB</td>
+<td>Fedora 20 Alpha</td>
+<td>4.2a<br>2013-09-25</td>
+<td>gcc 4.7.3</td>
+<td>-march=core-avx2 -mno-avx -mno-avx2 -Ofast</td>
+<td>692205775 rays</td>
+<td>2013-11-04</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="intel">
+<td>976.33</td>
+<td>Intel i7-4960HQ</td>
+<td>1/4</td>
+<td>2.6/3.6/3.8 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.9.5</td>
+<td>4.3a<br>2015-01-23</td>
+<td>Apple LLVM 5.1<br>clang-503.0.40</td>
+<td>-O2</td>
+<td>583664204 rays</td>
+<td>2015-01-30</td>
+<td>googs</td>
+</tr>
+
+<tr class="intel">
+<td>982.18</td>
+<td>Intel i7-4960HQ</td>
+<td>1/4</td>
+<td>2.6/3.6/3.8 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.9.5</td>
+<td>4.3a<br>2015-01-23</td>
+<td>Apple LLVM 5.1<br>clang-503.0.40</td>
+<td>-Ofast</td>
+<td>583513037 rays</td>
+<td>2015-01-23</td>
+<td>googs</td>
+</tr>
+
+<tr class="intel">
+<td>998.01</td>
+<td>Intel i7-4960HQ</td>
+<td>1/4</td>
+<td>2.6/3.6/3.8 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.9.5</td>
+<td>4.3a<br>2015-01-23</td>
+<td>Apple LLVM 5.1<br>clang-503.0.40</td>
+<td>-O3 –DNDEBUG</td>
+<td>585930795 rays</td>
+<td>2015-01-23</td>
+<td>googs</td>
+</tr>
+
+<tr class="intel">
+<td>992.11</td>
+<td>Intel i7-5960X</td>
+<td>1/8</td>
+<td>3.5 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>576466325 rays</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1045.15</td>
+<td>Intel i7-5960X</td>
+<td>1/8</td>
+<td>3.5 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-O2</td>
+<td>570510945 rays</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1065.04</td>
+<td>Intel i7-2600K</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>8 MB</td>
+<td>Kubuntu 11.04<br>2.6.38-11</td>
+<td>4.1a<br>2011-08-22</td>
+<td>gcc 4.5.2</td>
+<td>-O3 -mtune=core2</td>
+<td>676266538 rays</td>
+<td>2011-08-23</td>
+<td>guy</td>
+</tr>
+
+<tr class="intel">
+<td>1171.12</td>
+<td>MacBook Pro<br>Intel i7-3615QM</td>
+<td>1/4</td>
+<td>2.3/3.3 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.8.2</td>
+<td>4.1<br>official</td>
+<td>gcc 4.7.2</td>
+<td>-march=corei7 -Ofast</td>
+<td>675440364 rays</td>
+<td>2012-12-02</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="intel">
+<td>1200.15</td>
+<td>Intel i7-2600K</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>8 MB</td>
+<td>Kubuntu 11.04<br>2.6.38-11</td>
+<td>4.1a<br>2011-08-22</td>
+<td>icc v12u6</td>
+<td>-O3 -xHost</td>
+<td>676964565 rays</td>
+<td>2011-09-08</td>
+<td>guy</td>
+</tr>
+
+<tr class="intel">
+<td>1259.11</td>
+<td>Intel i7-2600K</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>8 MB</td>
+<td>Kubuntu 11.04<br>2.6.38-11</td>
+<td>4.1a<br>2011-08-22</td>
+<td>Oracle Solaris Compiler Suite v12.2</td>
+<td>-O5</td>
+<td>rays</td>
+<td>2011-08-23</td>
+<td>guy</td>
+</tr>
+
+<tr class="intel">
+<td>1264.67</td>
+<td>Intel i7-2600K</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>8 MB</td>
+<td>Kubuntu 11.04<br>2.6.38-11</td>
+<td>4.1a<br>2011-08-22</td>
+<td>Oracle Solaris Compiler Suite v12.2</td>
+<td>-O3</td>
+<td>rays</td>
+<td>2011-08-23</td>
+<td>guy</td>
+</tr>
+
+<tr class="intel">
+<td>1409.57</td>
+<td>Intel Xeon W3690</td>
+<td>1/6</td>
+<td>3.47 GHz</td>
+<td>12 MB</td>
+<td>CentOS 5.0<br>2.6.32-71.7.1.el6.x86_64</td>
+<td>4.0<br>9 Aug 2011</td>
+<td>gcc 4.4.4<br>20100726</td>
+<td>-O3</td>
+<td>690557585 rays</td>
+<td>2011-08-09</td>
+<td>axel</td>
+</tr>
+
+<tr class="intel">
+<td>1452.56</td>
+<td>MacBook Pro<br>Intel i7-3615QM</td>
+<td>1/4</td>
+<td>2.3/3.3 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.8.2</td>
+<td>4.1<br>official</td>
+<td>binaries</td>
+<td> </td>
+<td>676450616 rays</td>
+<td>2012-12-02</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="intel">
+<td>1488.15</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 5.4<br>2.6.18-164.el5</td>
+<td>4.2a<br>2013-02-08</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>691916359 rays</td>
+<td>2013-02-08</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1494.48</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 5.4<br>2.6.18-164.el5</td>
+<td>4.1<br>official</td>
+<td>icc v12u7</td>
+<td>-O3 -xHost -funroll-loops</td>
+<td>688316359 rays</td>
+<td>2012-05-29</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1545.88</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-103.ELsmp</td>
+<td>4.1<br>official</td>
+<td>icc v12u7</td>
+<td>-O3 -xHost -funroll-loops</td>
+<td>688316359 rays</td>
+<td>2012-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1588</td>
+<td>Intel Xeon E5-2630L</td>
+<td>2/12</td>
+<td>2.0 GHz</td>
+<td>15 MB</td>
+<td>Fedora 18<br>3.6.10-4.fc18</td>
+<td>4.2a<br>2013-02-04</td>
+<td>gcc 4.7.2</td>
+<td>-march=corei7 -Ofast</td>
+<td>691410720 rays</td>
+<td>2013-02-08</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>1600.45</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-103.ELsmp</td>
+<td>4.1<br>official</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>692435667 rays</td>
+<td>2012-01-05</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1600.70</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-103.ELsmp</td>
+<td>4.1<br>official</td>
+<td>icc v12u7</td>
+<td>-O2 -xHost -funroll-loops</td>
+<td>688316359 rays</td>
+<td>2012-01-05</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1618.21</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.2/3.6 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -Ofast</td>
+<td>688838002 rays</td>
+<td>2013-12-10</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>1634.26</td>
+<td>Intel i5-760</td>
+<td>1/4</td>
+<td>2.8 GHz (3.46)</td>
+<td>8 MB</td>
+<td>Fedora 14 alpha<br>2.6.35</td>
+<td>4.0<br>2010-03-12</td>
+<td>gcc 4.4.4 20100630</td>
+<td>-O3 -march=core2 -mcx16 -msahf -msse4.1 -ffast-math</td>
+<td>692711826 rays</td>
+<td>2010-10-19</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>1731.76</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 21<br>3.18.3-201.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>576005674 rays</td>
+<td>2015-02-02</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1741.85</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.16.6-200.fc20.x86_64</td>
+<td>4.2 official<br>2014-07-31</td>
+<td>gcc 4.8.3</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>573550076 rays</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1763.44</td>
+<td>AMD A8-6600K</td>
+<td>1/2(4)</td>
+<td>3.9/4.2 GHz</td>
+<td>4 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -mno-avx -Ofast</td>
+<td>688838002 rays</td>
+<td>2013-12-10</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>1821.76</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>694231605 rays</td>
+<td>2010-08-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1822.92</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>694231605 rays</td>
+<td>2010-07-17</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1825.37</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O2 -ffast-math -funroll-loops -fomit-frame-pointer</td>
+<td>694231605 rays</td>
+<td>2010-07-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1832.25</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O3 -ffast-math -funroll-loops</td>
+<td>692711826 rays</td>
+<td>2010-07-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1849.94</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.34.8-68.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.5<br>20101112</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>694231605 rays</td>
+<td>2011-03-24</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1857.85</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 21<br>3.18.3-201.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-O2</td>
+<td>570510945 rays</td>
+<td>2015-02-02</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1862.76</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.34.8-68.fc13</td>
+<td>4.1a<br>2011-03-24</td>
+<td>gcc 4.4.5<br>20101112</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>692990693 rays</td>
+<td>2011-03-24</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1879.08</td>
+<td>AMD A10-7850K</td>
+<td>1/2(4)</td>
+<td>3.7/4.0 GHz</td>
+<td>4 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -mno-avx -mno-avx2 -Ofast</td>
+<td>688830002 rays</td>
+<td>2014-01-26</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>1906.22</td>
+<td>AMD Phenom II X4 965BE</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>6 MB</td>
+<td>Ubuntu 12.04 LTS<br>3.2.0-33-generic</td>
+<td>4R0+20110410-1build1</td>
+<td>gcc 4.6.3</td>
+<td>[ubuntu package]</td>
+<td>690557585 rays</td>
+<td>2012-11-20</td>
+<td>jimbo</td>
+</tr>
+
+<tr class="intel">
+<td>1912.56</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-89.ELsmp</td>
+<td>4.1<br>official</td>
+<td>gcc 3.4.6<br>20060404</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>692435667 rays</td>
+<td>2012-01-04</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1924.13</td>
+<td>Intel Xeon E3.1225</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-89.ELsmp</td>
+<td>4.1<br>official</td>
+<td>gcc 3.4.6<br>20060404</td>
+<td>-O2</td>
+<td>692435667 rays</td>
+<td>2012-01-04</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1960.76</td>
+<td>Intel i5-2410M</td>
+<td>2/4</td>
+<td>2.30 GHz</td>
+<td>3 MB L3</td>
+<td>LinuxMint<br>2.6.38-8-generic-pae</td>
+<td>4R0<br>20100729</td>
+<td>gcc 4.5.2</td>
+<td>[Debian package]</td>
+<td>694618411 rays</td>
+<td>2011-08-16</td>
+<td>eryd</td>
+</tr>
+
+<tr class="amd">
+<td>1998.08</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.16.6-200.fc20.x86_64</td>
+<td>4.1 official<br>2011-11-04</td>
+<td>gcc 4.8.3</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>694859072 rays</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2016.91</td>
+<td>MacBookPro6,2<br>Intel i7-620m</td>
+<td>1/2</td>
+<td>2.67 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.6.3</td>
+<td>4.0a<br>2008-05-04</td>
+<td>i686-apple-darwin10-gcc-4.2.1</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>690524500 rays</td>
+<td>2010-11-20</td>
+<td>markus</td>
+</tr>
+
+<tr class="intel">
+<td>2149.21</td>
+<td>Intel Xeon X5650</td>
+<td>2/12</td>
+<td>2.66 GHz</td>
+<td>12 MB</td>
+<td>Red Hat 5.6<br>2.6.18-238.5.1.el5</td>
+<td>4.2a<br>2012-05-30</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>692435667 rays</td>
+<td>2012-05-30</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2166.32</td>
+<td>Intel Core2 Duo E8500</td>
+<td>1/2</td>
+<td>3.16 GHz</td>
+<td>2x3 MB</td>
+<td>Fedora 10 preview x64<br>2.6.27.4</td>
+<td>4.0a</td>
+<td>gcc 4.3.2</td>
+<td>-march=native -O3 -ffast-math -funroll-loops</td>
+<td>695181832 rays</td>
+<td>2008-11-05</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>2192.72</td>
+<td>Intel Core i7 920</td>
+<td>1/4</td>
+<td>2.933 GHz</td>
+<td>8 MB</td>
+<td>Fedora 14 alpha<br>2.6.35</td>
+<td>4.0<br>20100312</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=core2 -mcx16 -msahf -msse4.1 -O3 -ffast-math</td>
+<td>692711826 rays</td>
+<td>2010-08-24</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>2296.78</td>
+<td>Intel Core i7</td>
+<td>1/2</td>
+<td>2.66 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.8.2</td>
+<td>HEAD<br>20121021</td>
+<td>gcc 4.2.1</td>
+<td>-O2</td>
+<td>676450616 rays</td>
+<td>2012-10-21</td>
+<td>wahn</td>
+</tr>
+
+<tr class="intel">
+<td>2314.16</td>
+<td>Intel Intel Core2 Duo E8400</td>
+<td>1/2</td>
+<td>3.0 GHz</td>
+<td>2x3 MB</td>
+<td>Fedora 9 x64<br>2.6.25-3</td>
+<td>3.9</td>
+<td>gcc 4.3.0</td>
+<td>-O3</td>
+<td>695361517 rays</td>
+<td>2008-05-17</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="intel">
+<td>2433.7</td>
+<td>Intel i7-2600K</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>8 MB</td>
+<td>Kubuntu 11.04<br>2.6.38-11</td>
+<td>4.1a<br>2011-08-22</td>
+<td>AMD Open64 Compiler v4.2.5.2</td>
+<td>-O1 (-O2 and -O3 didn't compile)</td>
+<td>rays</td>
+<td>2011-08-23</td>
+<td>guy</td>
+</tr>
+
+<tr class="amd">
+<td>2463.9</td>
+<td>AMD Opteron 8384 "Shanghai"</td>
+<td>2/8</td>
+<td>2.7 GHz</td>
+<td>6 MB</td>
+<td>Solaris 10u9</td>
+<td>4.0</td>
+<td>Oracle/Sun Studio 12.2</td>
+<td>-fast -m64 -xtarget=native -xunroll=9 -xmodel=medium -xstrconst -lm -lmopt</td>
+<td>694718483 rays</td>
+<td>2010-12-28</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>2479.26</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 16<br>3.3.0-8.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>688838002 rays</td>
+<td>2012-04-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2490.26</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 16<br>3.3.1-3.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>688838002 rays</td>
+<td>2012-04-11</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>2565.46</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 16<br>3.3.0-8.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops</td>
+<td>691988876 rays</td>
+<td>2012-04-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2600.61</td>
+<td>iMac13,1<br>Intel i5</td>
+<td>1/4</td>
+<td>2.9 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.8.4</td>
+<td>radiance-4.2.a-Darwin.dmg</td>
+<td> </td>
+<td> </td>
+<td>671504176 rays</td>
+<td>2013-09-21</td>
+<td>tribu02</td>
+</tr>
+
+<tr class="amd">
+<td>2639.41</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 20<br>3.12.6-300.fc20.x86_64</td>
+<td>4.2 official<br>2014-07-31</td>
+<td>gcc 4.8.2</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>573550076 rays</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2653.14</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Ubuntu 12.10<br>3.5.0-18</td>
+<td>4.2a HEAD<br>2012-11-18</td>
+<td>gcc 4.7.2</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>688838002 rays</td>
+<td>2012-11-19</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>2782.91</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 12<br>2.6.32.16-141.fc12</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>694231605 rays</td>
+<td>2010-07-14</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2783.58</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Ubuntu 12.10<br>3.5.0-18</td>
+<td>4R1+20120125-1build1</td>
+<td></td>
+<td>[ubuntu package]</td>
+<td>691988876 rays</td>
+<td>2012-11-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2788.37</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 16<br>3.3.1-3.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2</td>
+<td>691988876 rays</td>
+<td>2012-04-11</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2791.7</td>
+<td>Intel Xeon X5355</td>
+<td>2/8</td>
+<td>2.66 GHz</td>
+<td>8 MB</td>
+<td>SunOS 5.10<br>Update 4</td>
+<td>3.8</td>
+<td>Sun Studio 12</td>
+<td>-fast -xtarget=opteron -m64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>695473902 rays</td>
+<td>2008-03-29</td>
+<td>angelo &amp;<br>james</td>
+</tr>
+
+<tr class="amd">
+<td>3035.6</td>
+<td>AMD Opteron 2218 HE<br>&quot;Santa Rosa&quot;</td>
+<td>2/4</td>
+<td>2.6 GHz</td>
+<td>2 x 1 MB</td>
+<td>Solaris 10u9</td>
+<td>4.0</td>
+<td>Oracle/Sun Studio 12.1</td>
+<td>-fast -m64 -xtarget=generic -xunroll=9 -xmodel=medium -xstrconst -lm -lmopt</td>
+<td>692849355 rays</td>
+<td>2011-03-22</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>3051.4</td>
+<td>AMD Opteron 2220 SE</td>
+<td>2/4</td>
+<td>2.814 GHz</td>
+<td>1 MB</td>
+<td>Solaris 10<br>Update 3</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>697118035 rays</td>
+<td>2007-07-13</td>
+<td>dclarke</td>
+</tr>
+
+<tr class="intel">
+<td>3134</td>
+<td>Intel Core 2 Quad Q9300</td>
+<td>1/4</td>
+<td>2.5 GHz</td>
+<td>12 MB</td>
+<td>openSUSE 11.0<br>Linux 2.6.25.5-1.1-pae i686</td>
+<td>4.0a May 20 2008</td>
+<td>gcc 4.3.1</td>
+<td>-O3</td>
+<td>686637129 rays</td>
+<td>2008-07-31</td>
+<td>rob<!--Rob Guglielmetti <rpg at rumblestrip.org>--></td>
+</tr>
+
+<tr class="intel">
+<td>3143.50</td>
+<td>Intel i5-2467M</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Ubuntu 12.10<br>3.5.0-18</td>
+<td>4R1+20120125-1build1 -sse3</td>
+<td> </td>
+<td>[ubuntu package]</td>
+<td>714798037 rays</td>
+<td>2012-11-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>3154.20</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 16<br>3.3.0-8.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2</td>
+<td>691988876 rays</td>
+<td>2012-04-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>3160.31</td>
+<td>Macintosh Quad Core Intel Xeon</td>
+<td>2/8</td>
+<td>2.8 GHz</td>
+<td>12 MB</td>
+<td>OS X 10.5.2</td>
+<td>3.8</td>
+<td>gcc 4.0.1</td>
+<td>-O2</td>
+<td>rays</td>
+<td>2008-04-17</td>
+<td>jm</td>
+</tr>
+
+<tr class="amd">
+<td>3190.51</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.5-85.fc8</td>
+<td>3.8</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 -ffast-math -funroll-loops -m64</td>
+<td>694759504 rays</td>
+<td>2008-05-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>3221.28</td>
+<td>AMD Opteron 152</td>
+<td>1/1</td>
+<td>2.613 GHz</td>
+<td>1 MB</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>697118035 rays</td>
+<td>2006-12-16</td>
+<td>dclarke</td>
+</tr>
+
+<tr class="amd">
+<td>3250.6</td>
+<td>AMD Opteron 2218</td>
+<td>2/4</td>
+<td>2.60 GHz</td>
+<td>1 MB</td>
+<td>Solaris 10<br>6/06 (118855-19)</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>694740171 rays</td>
+<td>2006-12-27</td>
+<td>wyang</td>
+</tr>
+
+<tr class="amd">
+<td>3253.18</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 20<br>3.12.6-300.fc20.x86_64</td>
+<td>4.2a<br>2013-09-03</td>
+<td>gcc 4.8.2</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>691916359 rays</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>3325.03</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 12<br>2.6.32.16-141.fc12</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.3.2</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>694551575 rays</td>
+<td>2010-07-14</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>3354.96</td>
+<td>Macintosh Dual Core Intel Xeon</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>4 MB</td>
+<td>OS X 10.4.8</td>
+<td>3.8</td>
+<td>gcc 4.0.1</td>
+<td>-O3 -fast</td>
+<td>694474996 rays</td>
+<td>2006-11-09</td>
+<td>matt</td>
+</tr>
+
+<tr class="amd">
+<td>3355.49</td>
+<td>AMD Phenom 9850</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.5-85.fc8</td>
+<td>3.9</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 -ffast-math -funroll-loops -m64</td>
+<td>695315470 rays</td>
+<td>2008-05-04</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>3404.74</td>
+<td>Intel Core 2 Duo E6600</td>
+<td>1/2</td>
+<td>2.44 GHz</td>
+<td>4 MB</td>
+<td>2.6.17.11-102.caos.smp</td>
+<td>3.8</td>
+<td>gcc 4.1.1</td>
+<td>-O3 -mtune=generic -mfpmath=sse -msse3 -ffast-math -funroll-loops</td>
+<td>695478577 rays</td>
+<td>2006-11-15</td>
+<td>visarc</td>
+</tr>
+
+<tr class="intel">
+<td>3455.85</td>
+<td>Macintosh Quad Core Intel Xeon</td>
+<td>2/8</td>
+<td>2.53 GHz</td>
+<td>12 MB</td>
+<td>OS X 10.5.2</td>
+<td>3.8</td>
+<td>precompiled</td>
+<td>-O2</td>
+<td>713684206 rays, <a href="http://markjstock.org/radmisc/jelle_080320_serial.png">image</a></td>
+<td>2008-03-20</td>
+<td>jelle</td>
+</tr>
+
+<tr class="intel">
+<td>3486.07</td>
+<td>Macintosh Dual Core Intel Xeon</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>4 MB</td>
+<td>OS X 10.4.8</td>
+<td>3.8</td>
+<td>precompiled</td>
+<td>-O2</td>
+<td>694474996 rays</td>
+<td>2006-11-22</td>
+<td>kirk</td>
+</tr>
+
+<tr class="intel">
+<td>3696.74</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.2</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.3.0</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>692329000 rays</td>
+<td>2008-04-01</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>3720.23</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.8</td>
+<td>4.0a<br>2008-05-04</td>
+<td>gcc 4.3.0<br>20071026</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>? rays</td>
+<td>2010-11-20</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>3751.28</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.8</td>
+<td>4.1a<br>2010-11-20</td>
+<td>gcc 4.3.0<br>20071026</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>? rays</td>
+<td>2010-11-20</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>3808.7</td>
+<td>AMD Opteron</td>
+<td>2/2</td>
+<td>2.193 GHz</td>
+<td>1 MB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 12</td>
+<td>-fast -xtarget=generic -m64 -xmodel=medium -xstrconst, <a
+href="#n2">note 2</a></td>
+<td>695828024 rays</td>
+<td>2008-03-29</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>3840.8</td>
+<td>AMD Opteron</td>
+<td>4/8</td>
+<td>2.2 GHz</td>
+<td>1 MB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>697118035 rays</td>
+<td>2006-12-17</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>3913.68</td>
+<td>AMD Athlon 64 3700+</td>
+<td>1/1</td>
+<td>2.411 GHz</td>
+<td>1 MB</td>
+<td>SuSe 10.0 64-bit<br>2.6.13-15.7-default</td>
+<td>3.8</td>
+<td>gcc 4.0.2<br>20050901</td>
+<td>-O3</td>
+<td>708862117 rays</td>
+<td>2006-10-27</td>
+<td>archenergy</td>
+</tr>
+
+<tr class="amd">
+<td>3916.4</td>
+<td>AMD Opteron</td>
+<td>2/2</td>
+<td>2.193 GHz</td>
+<td>1 MB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>697118035 rays</td>
+<td>2006-12-07</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>3971.76</td>
+<td>AMD Opteron 250</td>
+<td>2/2</td>
+<td>2.39 GHz</td>
+<td>1 MB L2</td>
+<td>Linux 2.6.9-34.107.plus.c4smp</td>
+<td>3.8</td>
+<td>gcc 3.4.6 20060404</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>698816033 rays</td>
+<td>2006-12-28</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>4020.84</td>
+<td>Intel Xeon E5420</td>
+<td>1/4</td>
+<td>2.5 GHz</td>
+<td>12 MB</td>
+<td>Windows Vista SP2</td>
+<td>4.2a<br>2013-06-27</td>
+<td>MSVC 2010</td>
+<td>/O2 /fp:fast</td>
+<td> </td>
+<td>2013-06-29</td>
+<td>randolph</td>
+</tr>
+
+<tr class="amd">
+<td>4060.85</td>
+<td>AMD Athlon 64 3700+</td>
+<td>1/1</td>
+<td>2.52 GHz</td>
+<td>1 MB</td>
+<td>SuSe 9.2 64-bit<br>2.6.8-24.25-default</td>
+<td>3.8</td>
+<td>gcc 3.4.4<br>20040809</td>
+<td>-O3</td>
+<td>730762717 rays</td>
+<td>2006-10-27</td>
+<td>archenergy</td>
+</tr>
+
+<tr class="intel">
+<td>4113.80</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.1</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.0.1</td>
+<td>-fast</td>
+<td>689905422 rays</td>
+<td>2007-12-13</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>4193.02</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.2</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.3.0</td>
+<td>-O2</td>
+<td>693002816 rays</td>
+<td>2008-04-01</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>4219.9</td>
+<td>Intel Xeon E5420</td>
+<td>1/4</td>
+<td>2.5 GHz</td>
+<td>12 MB</td>
+<td>Windows Vista SP2</td>
+<td>4.2a<br>2013-06-27</td>
+<td>MSVC 2010</td>
+<td>/O2</td>
+<td> </td>
+<td>2013-06-27</td>
+<td>randolph</td>
+</tr>
+
+<tr class="amd">
+<td>4243.34</td>
+<td>AMD Athlon 64 X2 4800+</td>
+<td>1/2</td>
+<td>2.411 GHz</td>
+<td>1 MB</td>
+<td>SuSe 10.0<br>2.6.13-15.12-smp</td>
+<td>3.8</td>
+<td>gcc 4.0.2<br>20050901</td>
+<td>-O3</td>
+<td>730762717 rays</td>
+<td>2006-10-27</td>
+<td>archenergy</td>
+</tr>
+
+<tr class="amd">
+<td>4365.81</td>
+<td>AMD Opteron 250</td>
+<td>2/2</td>
+<td>2.412 GHz</td>
+<td>1 MB L2</td>
+<td>Fedora 4 SMP<br>2.6.11-1.1369_FC4smp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 4.0.0 20050519</td>
+<td>-O2</td>
+<td>697679551 rays, <a href="http://markjstock.org/radmisc/aia_serial4.png">image</a></td>
+<td>2006-01-28</td>
+<td>atelier<!--atelier iebele abel <atelier at iebele.nl>--></td>
+</tr>
+
+<tr class="amd">
+<td>4617.15</td>
+<td>AMD Phenom 9500</td>
+<td>1/4</td>
+<td>2.20 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 [TLB workaround disabled in BIOS]</td>
+<td>695155945 rays</td>
+<td>2008-04-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>4628.73</td>
+<td>AMD Opteron 246</td>
+<td>2/2</td>
+<td>2.0 GHz</td>
+<td>1 MB L2</td>
+<td>RH EL 3 WS 64-bit<br>2.4.21-9.EL</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 4.1.0 20050702</td>
+<td>-O3 -ffast-math -funroll-loops</td>
+<td>697605988 rays</td>
+<td>2005-09-09</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>4648.86</td>
+<td>Intel Core Duo U7300</td>
+<td>1/2</td>
+<td>1.30 GHz</td>
+<td>3 MB</td>
+<td>ubuntu 10.4 LTS<br>2.6.32</td>
+<td>4.0a<br>2008-05-04</td>
+<td>gcc 4.4.3-4ubuntu5 2009</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>694780729 rays</td>
+<td>2010-11-20</td>
+<td>markus</td>
+</tr>
+
+<tr class="intel">
+<td>4832.96</td>
+<td>Macintosh Intel Core Duo</td>
+<td>1/2</td>
+<td>2.00 GHz</td>
+<td>2 MB</td>
+<td>OS X 10.4.8</td>
+<td>3.8a</td>
+<td>gcc 4.0.1</td>
+<td>-fast</td>
+<td>694474996 rays</td>
+<td>2006-10-09</td>
+<td>G<!--Giulio Antonutto <Giulio.Antonutto at arup.com>--></td>
+</tr>
+
+<tr class="amd">
+<td>4840.19</td>
+<td>AMD Athlon 64 X2 4200+</td>
+<td>1/2</td>
+<td>2.21 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 5 x86_64<br>2.6.18-1.2257.fc5</td>
+<td>4.0a</td>
+<td>gcc 4.1.1 20070105</td>
+<td>-O2</td>
+<td>695361517 rays</td>
+<td>2008-11-12</td>
+<td>dmaino</td>
+</tr>
+
+<tr class="intel">
+<td>4879.54</td>
+<td>Intel Intel Core2 Duo E6300</td>
+<td>1/2</td>
+<td>1.86 GHz</td>
+<td>2x2 MB</td>
+<td>Ubuntu 8.04 i386<br>2.6.24</td>
+<td>3.9</td>
+<td>gcc 4.2.3</td>
+<td>-O3</td>
+<td>695647767 rays</td>
+<td>2008-05-19</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="ppc">
+<td>4956.56</td>
+<td>Macintosh PowerPC G5</td>
+<td>2/4</td>
+<td>2.5 GHz</td>
+<td>1 MB L2</td>
+<td>Darwin 8.3.0<br>Oct  3 2005</td>
+<td>3.8a<br>Dec 15 2005</td>
+<td>gcc 4.0.1 build 5247</td>
+<td>-fast (minus -malign-natural option); see <a href="#n1">note 1</a></td>
+<td>691557916 rays</td>
+<td>2005-12-18</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="intel">
+<td>5053.41</td>
+<td>MacBookAir3,1<br>Intel Core 2 Duo SU9400</td>
+<td>1/2</td>
+<td>1.4 GHz</td>
+<td>3 MB</td>
+<td>OS X 10.6.5</td>
+<td>4.1a<br>2010-10-20</td>
+<td>gcc 4.2.1</td>
+<td>-O2 -funroll-loops -ffast-math</td>
+<td>689974674 rays</td>
+<td>2010-12-28</td>
+<td>markus</td>
+</tr>
+
+<tr class="amd">
+<td>5100.40</td>
+<td>AMD Opteron 246</td>
+<td>2/2</td>
+<td>2.009 GHz</td>
+<td>1 MB</td>
+<td>SuSe 10.0 x86-64<br>2.6.13-15.12-smp</td>
+<td>3.8</td>
+<td>gcc 4.0.2<br>20050901</td>
+<td>-O3</td>
+<td>730762717 rays</td>
+<td>2006-10-27</td>
+<td>archenergy</td>
+</tr>
+
+<tr class="intel">
+<td>5334.52</td>
+<td>Macintosh Intel Core Duo</td>
+<td>1/2</td>
+<td>1.83 GHz</td>
+<td>2 MB</td>
+<td>OS X 10.4.5</td>
+<td>3.8a</td>
+<td>gcc 4.0.1</td>
+<td>-fast</td>
+<td>694378356 rays</td>
+<td>2006-02-28</td>
+<td>rob<!--Rob Guglielmetti <rpg at rumblestrip.org>--></td>
+</tr>
+
+<tr class="amd">
+<td>5661.39</td>
+<td>AMD Fusion E-350</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB L2</td>
+<td>Fedora 15<br>2.6.40-4.fc15.x86_64</td>
+<td>4.1a<br>24 Mar 2011</td>
+<td>gcc 4.6.0</td>
+<td>-O2</td>
+<td>690557585 rays</td>
+<td>2011-08-17</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>5706.11</td>
+<td>AMD Sempron 3100+</td>
+<td>1/1</td>
+<td>1.8 GHz</td>
+<td>256 kB</td>
+<td>Gentoo 2005.1<br>linux-2.6.15-gentoo-r3</td>
+<td>3.7.2</td>
+<td>gcc 3.4.4</td>
+<td>-O3 -ffast-math -funroll-loops -march=k8 -mno-ieee-fp</td>
+<td>697785041 rays</td>
+<td>2006-02-10</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="ppc">
+<td>5773.01</td>
+<td>Macintosh PowerPC G5</td>
+<td>2/4</td>
+<td>2.5 GHz</td>
+<td>1 MB L2</td>
+<td>Darwin 8.3.0<br>Oct  3 2005</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 4.0.1 build 5247</td>
+<td>-O3</td>
+<td>734118725 rays</td>
+<td>2005-12-15</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="intel">
+<td>5980.25</td>
+<td>Intel Pentium M</td>
+<td>1/1</td>
+<td>1.8 GHz</td>
+<td>2048 kB</td>
+<td>Debian<br>2.6.26-2-686</td>
+<td>4.0a<br>May 25 2009</td>
+<td>gcc Debian 4.3.2-1.1</td>
+<td>default</td>
+<td>695076125 rays</td>
+<td>2009-06-01</td>
+<td>Nikhil</td>
+</tr>
+
+<tr class="ppc">
+<td>5991.66</td>
+<td>Macintosh PowerPC G5</td>
+<td>2/4</td>
+<td>2.5 GHz</td>
+<td>1 MB L2</td>
+<td>Darwin 8.3.0<br>Oct  3 2005</td>
+<td>3.8a<br>Dec 15 2005</td>
+<td>gcc 4.0.1 build 5247</td>
+<td>-O3</td>
+<td>698550100 rays</td>
+<td>2005-12-15</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="intel">
+<td>6042</td>
+<td>Intel Pentium 4</td>
+<td>1/1</td>
+<td>3.2 GHz</td>
+<td>512 kB</td>
+<td>Debian<br>linux-2.4.22 openmosix</td>
+<td>HEAD 2006-08-20</td>
+<td>gcc 3.3.3<br>20040110</td>
+<td>-O3 -march=pentium3 -mfpmath=sse -msse2 -funroll-loops -fomit-frame-pointer -ffast-math</td>
+<td>697804871 rays</td>
+<td>2006-08-20</td>
+<td>lars<!--Lars O. Grobe <grobe at gmx.net>--></td>
+</tr>
+
+<tr class="amd">
+<td>6063.21</td>
+<td>AMD Phenom 9600</td>
+<td>1/4</td>
+<td>2.30 GHz</td>
+<td>512 kB L2</td>
+<td>Linux Mint 9<br>2.6.32-21 x86_64</td>
+<td>3.9<br>20100109</td>
+<td>DEB repository</td>
+<td>-O2</td>
+<td>708175724 rays</td>
+<td>2010-08-08</td>
+<td>dmaino<!--David Maino <dmaino at ideasi com>--></td>
+</tr>
+
+<tr class="amd">
+<td>6252.82</td>
+<td>AMD Sempron 3100+</td>
+<td>1/1</td>
+<td>1.8 GHz</td>
+<td>256 kB</td>
+<td>Gentoo 2005.1<br>linux-2.6.15-gentoo-r3</td>
+<td>3.7.2</td>
+<td>gcc 3.4.4</td>
+<td>-O2</td>
+<td>696849482 rays</td>
+<td>2006-02-10</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="intel">
+<td>6386.06</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Cygwin<br>1.5.25</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 4.3.1</td>
+<td>-O3 -march=pentium4 -mfpmath=sse -msse3</td>
+<td>698138730 rays</td>
+<td>2008-07-03</td>
+<td>andy</td>
+</tr>
+
+<tr class="ppc">
+<td>6403.98</td>
+<td>Macintosh iMac G5</td>
+<td>1/1</td>
+<td>2 GHz</td>
+<td>512 kB L2</td>
+<td>OS X Tiger 10.4.3</td>
+<td>3.8a<br>Dec 15 2005</td>
+<td>gcc 4.0.0 build 4061</td>
+<td>-fast (minus -malign-natural option); see <a href="#n1">note 1</a></td>
+<td>693777405 rays</td>
+<td>2005-12-15</td>
+<td>tbleicher<!--Thomas Bleicher <tbleicher at arcor.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>6528.85</td>
+<td>Intel P4</td>
+<td>2/2</td>
+<td>3.0 GHz</td>
+<td>512 kB L2 each</td>
+<td>Fedora Core 4<br>2.6.11-1.1369_FC4smp</td>
+<td>3.8a<br>25 Jan 2006</td>
+<td>gcc 4.0.0 20050519</td>
+<td>-O2 -DMC -march=pentium4 -ffast-math -mno-ieee-fp -fomit-frame-pointer</td>
+<td>694397622 rays, <a href="http://markjstock.org/radmisc/2006_03_17_O2more.png">image</a></td>
+<td>2006-03-17</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>6643.34</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Cygwin<br>1.5.25</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 4.3.1</td>
+<td>-O3</td>
+<td>699083623 rays</td>
+<td>2008-07-03</td>
+<td>andy</td>
+</tr>
+
+<tr class="amd">
+<td>6829.45</td>
+<td>AMD Athlon XP 2500+</td>
+<td>1/1</td>
+<td>1.830 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 2<br>2.6.5-1.358</td>
+<td>3.6.1<br>27 Oct 2004</td>
+<td>gcc 3.3.3 20040412</td>
+<td>-O2 -DMC -march=athlon-xp -ffast-math -mno-ieee-fp</td>
+<td>661226381 rays, <a href="http://markjstock.org/radmisc/old.png">image</a></td>
+<td>2005-08-25</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="amd">
+<td>6832.97</td>
+<td>AMD Athlon XP 2500+</td>
+<td>1/1</td>
+<td>1.830 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 5<br>2.6.16-1.2133_FC5</td>
+<td>3.8</td>
+<td>gcc 4.1.1 20060525</td>
+<td>-O2 -march=athlon-xp -ffast-math -mno-ieee-fp</td>
+<td>698145988 rays</td>
+<td>2006-11-10</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="ppc">
+<td>6836.26</td>
+<td>Macintosh PowerPC G5</td>
+<td>2/2</td>
+<td>2.7 GHz</td>
+<td>2 MB L2</td>
+<td>OS X 10.4.3<br>Darwin 8.3.0<br>Oct 3 2005</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 4.0.0 20041026<br>build 4061</td>
+<td>-O2</td>
+<td>734118725 rays, <a href="http://markjstock.org/radmisc/aia_serial_osx.png">image</a></td>
+<td>2006-01-28</td>
+<td>atelier<!--atelier iebele abel <atelier at iebele.nl>--></td>
+</tr>
+
+<tr class="intel">
+<td>6875.52</td>
+<td>Intel P4 Prescott</td>
+<td>1/1</td>
+<td>3.0 GHz, HT</td>
+<td>1 MB L2</td>
+<td>Fedora Core 4<br>2.6.12-1.1447_FC4smp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 4.1.0 20050902</td>
+<td>-march=prescott -mno-ieee-fp -O3 -ffast-math -fomit-frame-pointer</td>
+<td>694836772 rays</td>
+<td>2005-09-09</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="amd">
+<td>6930.6</td>
+<td>AMD Athlon XP 2500+</td>
+<td>1/1</td>
+<td>1.830 GHz</td>
+<td>1 MB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=pentium_pro -xstrconst, <a href="#n2">note 2</a></td>
+<td>694329269 rays</td>
+<td>2006-12-07</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>6999.35</td>
+<td>AMD Athlon XP 2500+</td>
+<td>1/1</td>
+<td>1.830 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 2<br>2.6.5-1.358</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.3.3 20040412</td>
+<td>-O2 -march=athlon-xp -ffast-math -mno-ieee-fp</td>
+<td>696084398 rays, <a href="http://markjstock.org/radmisc/serial_athO2m.png">image</a></td>
+<td>2005-08-25</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>7216.56</td>
+<td>Intel Xeon</td>
+<td>4/8</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Red Hat<br>2.6.9-34.0.2.ELsmp</td>
+<td>3.8</td>
+<td>gcc 3.4.5<br>20051201</td>
+<td>-O2 -march=nocona -ffast-math -funroll-loops -fomit-frame-pointer</td>
+<td>696030602 rays</td>
+<td>2006-11-26</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>7296.93</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Cygwin<br>1.5.25</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 3.4.4</td>
+<td>-O2</td>
+<td>698390965 rays</td>
+<td>2008-07-02</td>
+<td>andy</td>
+</tr>
+
+<tr class="intel">
+<td>7371.52</td>
+<td>Intel P4</td>
+<td>2/2</td>
+<td>3.0 GHz</td>
+<td>512 kB L2 each</td>
+<td>Fedora Core 4<br>2.6.11-1.1369_FC4smp</td>
+<td>3.8a<br>25 Jan 2006</td>
+<td>gcc 4.0.0 20050519</td>
+<td>-O2</td>
+<td>695414723 rays, <a href="http://markjstock.org/radmisc/2006_03_17_O2.png">image</a></td>
+<td>2006-03-17</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>7409.39</td>
+<td>Intel Xeon</td>
+<td>4/8</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Red Hat<br>2.6.9-34.0.2.ELsmp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.4.5<br>20051201</td>
+<td>-O2 -march=nocona -ffast-math -funroll-loops -fomit-frame-pointer</td>
+<td>696030602 rays, <a href="http://markjstock.org/radmisc/xeon_serb_2006-08.png">image</a></td>
+<td>2006-08-23</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>7476.04</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Cygwin<br>1.5.25</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 3.4.4</td>
+<td>-O3</td>
+<td>698390965 rays</td>
+<td>2008-07-02</td>
+<td>andy</td>
+</tr>
+
+<tr class="intel">
+<td>7542.66</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Cygwin<br>1.5.25</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 4.3.1</td>
+<td>-O2</td>
+<td>698138730 rays</td>
+<td>2008-07-03</td>
+<td>andy</td>
+</tr>
+
+<tr class="intel">
+<td>7544.8</td>
+<td>Pentium 3-S</td>
+<td>2/2</td>
+<td>1.400 GHz</td>
+<td>512 kB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=pentium_pro -xstrconst, <a href="#n2">note 2</a></td>
+<td>695520228 rays</td>
+<td>2006-12-11</td>
+<td>james</td>
+</tr>
+
+<tr class="amd">
+<td>7693.70</td>
+<td>AMD Sempron 3100+</td>
+<td>1/1</td>
+<td>1.8 GHz</td>
+<td>256 kB</td>
+<td>Fedora Core 4 i386<br>linux-2.6.15</td>
+<td>3.7.2</td>
+<td>gcc 4.0.2</td>
+<td>-O2</td>
+<td>695716037 rays</td>
+<td>2006-02-10</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="intel">
+<td>7698.84</td>
+<td>Intel Xeon</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Ubuntu<br>2.6.17-11-generic #2 SMP x86_64</td>
+<td>3.8</td>
+<td>gcc 4.1.0</td>
+<td>-O2</td>
+<td>695866152 rays</td>
+<td>2007-03-08</td>
+<td>eryd<!--Ery Djunaedy <erydjunaedy@gmail.com>--></td>
+</tr>
+
+<tr class="amd">
+<td>7793.39</td>
+<td>AMD Phenom 9500</td>
+<td>1/4</td>
+<td>2.20 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 [TLB workaround enabled in BIOS]</td>
+<td>695155945 rays</td>
+<td>2008-04-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>8002.02</td>
+<td>AMD Athlon XP 2500+</td>
+<td>1/1</td>
+<td>1.830 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 2<br>2.6.5-1.358</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.3.3 20040412</td>
+<td>-O2</td>
+<td>696292130 rays, <a href="http://markjstock.org/radmisc/serial_athO2.png">image</a></td>
+<td>2005-08-25</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="sparc">
+<td>8024.4</td>
+<td>Sun Blade 2500 (Silver)<br>UltraSparc III</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>1 MB L2</td>
+<td>SunOS neptune 5.10 9</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td><a href="#n2">note 2</a></td>
+<td>696543084 rays</td>
+<td>2007-01-09</td>
+<td>dclarke</td>
+</tr>
+
+<tr class="amd">
+<td>8072.15</td>
+<td>AMD Sempron 3000+</td>
+<td>1/1</td>
+<td>1.8 GHz</td>
+<td>128 kB</td>
+<td>Fedora Core 6<br>2.6.19-1.2895.fc6</td>
+<td>3.8</td>
+<td>gcc 4.1.1 20070105</td>
+<td>-O2 -ffast-math -funroll-loops -mno-ieee-fp</td>
+<td>698985049 rays</td>
+<td>2007-01-25</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>8151</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Suse Linux on<br>Microsoft Virtual PC</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 4.1.2</td>
+<td>-O3</td>
+<td> </td>
+<td>2008-07-02</td>
+<td>andy</td>
+</tr>
+
+<tr class="intel">
+<td>8152.08</td>
+<td>Intel Xeon</td>
+<td>2/2</td>
+<td>3.2 GHz</td>
+<td>2 MB L2</td>
+<td>Fedora 4 SMP<br>2.6.11-1.1369_FC4smp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 4.0.0 20050519</td>
+<td>-O2</td>
+<td>697679551 rays, <a href="http://markjstock.org/radmisc/aia_serial3.png">image</a></td>
+<td>2006-01-28</td>
+<td>atelier<!--atelier iebele abel <atelier at iebele.nl>--></td>
+</tr>
+
+<tr class="amd">
+<td>8163.15</td>
+<td>AMD Athlon XP 2500+</td>
+<td>1/1</td>
+<td>1.830 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 5<br>2.6.16-1.2133_FC5</td>
+<td>3.8</td>
+<td>NA</td>
+<td>-O2<br>precompiled binaries</td>
+<td>703158394 rays</td>
+<td>2006-11-10</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>9132.82</td>
+<td>Intel Xeon</td>
+<td>4/8</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Red Hat<br>2.6.9-34.0.2.ELsmp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.4.5<br>20051201</td>
+<td>-O2</td>
+<td>697679551 rays, <a href="http://markjstock.org/radmisc/xeon_ser_2006-08.png">image</a></td>
+<td>2006-08-22</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>9404.57</td>
+<td>Intel Pentium D</td>
+<td>1/2</td>
+<td>3.4 GHz</td>
+<td>2 MB L2</td>
+<td>Suse Linux on<br>Microsoft Virtual PC</td>
+<td>3.8 HEAD<br>2008-04-17</td>
+<td>gcc 4.1.2</td>
+<td>-O2</td>
+<td> </td>
+<td>2008-07-02</td>
+<td>andy</td>
+</tr>
+
+<tr class="ppc">
+<td>10292.73</td>
+<td>Macintosh PowerPC G5</td>
+<td>2/2</td>
+<td>1.8 GHz</td>
+<td></td>
+<td>Darwin 8.2.0<br>Jun 24 2005</td>
+<td>3.8a<br>Sep 23 2005</td>
+<td>gcc 4.0.0 build 5026</td>
+<td>-O3</td>
+<td>734118725 rays, <a href="http://markjstock.org/radmisc/greg03_SerialG5dual.png">image</a></td>
+<td>2005-09-23</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="ppc">
+<td>10854.98</td>
+<td>Macintosh PowerPC G4 Powerbook</td>
+<td>1/1</td>
+<td>1.5 GHz</td>
+<td></td>
+<td>Darwin 8.2.0<br>Jun 24 2005</td>
+<td>3.8a<br>Sep 23 2005</td>
+<td>gcc 4.0.0 build 5026</td>
+<td>-O3</td>
+<td>734118725 rays, <a href="http://markjstock.org/radmisc/greg04_serialG5newstruct-O3.png">image</a></td>
+<td>2005-09-23</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="ppc">
+<td>11740.67</td>
+<td>Macintosh PowerPC G4 Powerbook</td>
+<td>1/1</td>
+<td>1.5 GHz</td>
+<td></td>
+<td>Darwin 8.2.0<br>Jun 24 2005</td>
+<td>3.8a<br>Sep 19 2005</td>
+<td>gcc 4.0.0 build 5026</td>
+<td>-O2</td>
+<td>734118725 rays, <a href="http://markjstock.org/radmisc/greg01_SerialG4laptop.png">image</a></td>
+<td>2005-09-22</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="sparc">
+<td>11856.1</td>
+<td>Sun SPARC64 V</td>
+<td>1/1</td>
+<td>1.32 GHz</td>
+<td>2 MB L2</td>
+<td>Solaris 9</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>Sun WorkShop 6 2000/04/07 C 5.1</td>
+<td>-xCC -fast -xarch=v8plusb -xchip=ultra2</td>
+<td>697764619 rays</td>
+<td>2005-09-09</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>12254.67</td>
+<td>Intel P4-M</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 1<br>2.4.22-1.2115.nptl</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.3.2 20031022</td>
+<td>-O2 -march=pentium4 -malign-double -mno-ieee-fp -ffast-math</td>
+<td>694720390 rays</td>
+<td>2005-08-25</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="sparc">
+<td>12335.7</td>
+<td>Sun SPARC64 V</td>
+<td>1/1</td>
+<td>1.32 GHz</td>
+<td>2 MB L2</td>
+<td>Solaris 9</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.4.2</td>
+<td>-m64 -O2 -ffast-math</td>
+<td>696621881 rays</td>
+<td>2005-09-09</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>12851.18</td>
+<td>Intel P4-M</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 1<br>2.4.22-1.2115.nptl</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.3.2 20031022</td>
+<td>-O3 -march=pentium4 -malign-double -mno-ieee-fp -ffast-math</td>
+<td>695881767 rays</td>
+<td>2005-08-26</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="sparc">
+<td>13005.9</td>
+<td>Sparc IIIi</td>
+<td>2/2</td>
+<td>1.002 GHz</td>
+<td>1 MB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=ultra3cu -xstrconst, <a href="#n2">note 2</a></td>
+<td>695237733 rays</td>
+<td>2006-12-07</td>
+<td>james</td>
+</tr>
+
+<tr class="ppc">
+<td>13732.17</td>
+<td>Macintosh PowerPC G5</td>
+<td>2/2</td>
+<td>1.8 GHz</td>
+<td></td>
+<td>Darwin 8.2.0<br>Jun 24 2005</td>
+<td>3.8a<br>Sep 19 2005</td>
+<td>gcc 4.0.0 build 5026</td>
+<td>-O2</td>
+<td>734118725 rays, <a href="http://markjstock.org/radmisc/greg03_SerialG5dual.png">image</a></td>
+<td>2005-09-22</td>
+<td>greg<!--Greg Ward <gregoryjward at gmail.com>--></td>
+</tr>
+
+<tr class="intel">
+<td>14028.47</td>
+<td>Intel P4-M</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 1<br>2.4.22-1.2115.nptl</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.3.2 20031022</td>
+<td>-O3</td>
+<td>696138209 rays</td>
+<td>2005-08-25</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>14151.77</td>
+<td>Intel P4-M</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 1<br>2.4.22-1.2115.nptl</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.3.2 20031022</td>
+<td>-O2</td>
+<td>697891703 rays</td>
+<td>2005-08-25</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>15429.60</td>
+<td>Intel Atom 330</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB</td>
+<td>2.6.32.12-115.fc12.i686</td>
+<td>4.0<br>27 Apr 2010</td>
+<td>gcc 4.4.3<br>20100127</td>
+<td>-O2 -mtune=atom -pipe -fomit-frame-pointer -funroll-loops</td>
+<td>693222182 rays</td>
+<td>2010-07-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>15917.10</td>
+<td>Intel Atom 330</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB</td>
+<td>2.6.32.12-115.fc12.i686</td>
+<td>4.0<br>27 Apr 2010</td>
+<td>gcc 4.4.3<br>20100127</td>
+<td>-O2</td>
+<td>695103890 rays</td>
+<td>2010-07-05</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>16705.07</td>
+<td>Intel P4-M</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>1 MB</td>
+<td>Fedora Core 1<br>2.4.22-1.2115.nptl</td>
+<td>3.8</td>
+<td>gcc 3.3.2 20031022</td>
+<td>-O2 -march=pentium4 -malign-double -mno-ieee-fp -ffast-math</td>
+<td>696688913 rays</td>
+<td>2006-11-10</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="other">
+<td>17187.5</td>
+<td>Loongson 2F<br>in Lemote Yeeloong 8089</td>
+<td>1/1</td>
+<td>797 MHz</td>
+<td>512 kB</td>
+<td>Fedora 13</td>
+<td>4.1a</td>
+<td>gcc 4.7.0 20110525</td>
+<td>-O3 -march=native -fno-math-errno -funsafe-math-optimizations -mno-shared</td>
+<td>689375442 rays</td>
+<td>2011-06-05</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>17254.27</td>
+<td>Intel Celeron-M ULV 353<br>Asus EeePc 701</td>
+<td>1/1</td>
+<td>630 MHz</td>
+<td>512 kB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-march=pentium-m -O3 -fomit-frame-pointer -ffast-math</td>
+<td>695926154 rays</td>
+<td>2008-04-04</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>17288.87</td>
+<td>Intel P4-M</td>
+<td>1/1</td>
+<td>1.6 GHz</td>
+<td>1 MB</td>
+<td>Fedora Core 1<br>2.4.22-1.2115.nptl</td>
+<td>3.8</td>
+<td>NA</td>
+<td>-O2<br>precompiled binaries</td>
+<td>703158394 rays</td>
+<td>2006-11-10</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="sparc">
+<td>19010</td>
+<td>Sun Fire 880<br>Ultrasparc III</td>
+<td>4/4</td>
+<td>750 MHz</td>
+<td></td>
+<td>Solaris<br>SunOS 5.10</td>
+<td>3.8a<br>8 Mar 2006</td>
+<td>Sun C 5.8</td>
+<td>-fast -xdepend -xprefetch -xvector -xsfpconst</td>
+<td>695441172 rays</td>
+<td>2006-03-10</td>
+<td>Lars<!--Lars Grobe <grobe at gmx.net>--></td>
+</tr>
+
+<tr class="other">
+<td>26958.1</td>
+<td>VIA Esther C7</td>
+<td>1/1</td>
+<td>1.20 GHz</td>
+<td>128 kB</td>
+<td>SunOS 5.11</td>
+<td>3.8</td>
+<td>Sun Studio 12</td>
+<td>-fast -xarch=i386 -xmodel=medium -xstrconst -m32</td>
+<td>695716510 rays</td>
+<td>2008-03-28</td>
+<td>angelo &amp;<br>james</td>
+</tr>
+
+<tr class="intel">
+<td>29632</td>
+<td>Pentium III (Coppermine)</td>
+<td>1/1</td>
+<td>500 MHz</td>
+<td>256 kB</td>
+<td>Fedora Core 4<br>linux-2.6.15</td>
+<td>3.7.2</td>
+<td>gcc 4.0.2</td>
+<td>-O2</td>
+<td>695716037 rays</td>
+<td>2006-02-10</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="intel">
+<td>32357.3</td>
+<td>Pentium II<br>(Deschutes)</td>
+<td>2/2</td>
+<td>400 MHz</td>
+<td>512 kB</td>
+<td>SunOS 5.8</td>
+<td>3.8</td>
+<td>Sun Studio 12</td>
+<td>-fast -xtarget=pentium_pro -xstrconst, <a href="#n2">note 2</a></td>
+<td>695716510 rays</td>
+<td>2008-03-29</td>
+<td>dclarke</td>
+</tr>
+
+<tr class="intel">
+<td>36606.8</td>
+<td>Pentium 2</td>
+<td>2/2</td>
+<td>333 MHz</td>
+<td>512 kB</td>
+<td>Solaris 8</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=pentium_pro -xstrconst, <a href="#n2">note 2</a></td>
+<td>695520228 rays</td>
+<td>2006-12-18</td>
+<td>james</td>
+</tr>
+
+<tr class="intel">
+<td>37560</td>
+<td>Pentium III (Katmai)</td>
+<td>1/1</td>
+<td>450 MHz</td>
+<td>512 kB</td>
+<td>Debian 3.1 (Sarge) stable<br>linux-2.6.8-2</td>
+<td>3.7.2</td>
+<td>gcc 3.3.5</td>
+<td>-O2</td>
+<td>697891703 rays</td>
+<td>2006-02-10</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="intel">
+<td>41655</td>
+<td>Celeron (Medocino)</td>
+<td>1/1</td>
+<td>500 MHz</td>
+<td>128 kB</td>
+<td>Ubuntu 5.10<br>linux-2.6.12-10</td>
+<td>3.7.2</td>
+<td>gcc 4.0.2</td>
+<td>-O2</td>
+<td>695716037 rays</td>
+<td>2006-02-10</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="other">
+<td>61297.6</td>
+<td>ARM1176JZF-S</td>
+<td>1/1</td>
+<td>700 MHz</td>
+<td>unknown</td>
+<td>Raspbian "Wheezy"<br>armv6l 2012-12-16</td>
+<td>3.6.11</td>
+<td>gcc 4.6.3</td>
+<td>-O2</td>
+<td>690060163 rays</td>
+<td>2013-04-20</td>
+<td>mstock</td>
+</tr>
+
+<tr class="sparc">
+<td>144425.1</td>
+<td>HyperSPARC ROSS RT620/RT625</td>
+<td>1/1</td>
+<td>125 MHz</td>
+<td>256 kB</td>
+<td>Solaris 8</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xnolibmopt -xspace -xtarget=ss20 -xarch=v8a -xstrconst, <a href="#n2">note 2</a></td>
+<td>696753111 rays</td>
+<td>2006-12-21</td>
+<td>james</td>
+</tr>
+
+<tr class="sparc">
+<td>224130.5</td>
+<td>HyperSPARC ROSS<br>SPARCstation-20</td>
+<td>1/4</td>
+<td>66 MHz</td>
+<td>256 kB</td>
+<td>Solaris 8<br>Update 4</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xnolibmopt -xspace -xtarget=ss20 -xarch=v8a -xstrconst, <a href="#n2">note 2</a></td>
+<td>696647291 rays</td>
+<td>2007-07-17</td>
+<td>dclarke</td>
+</tr>
+
+<tr class="ppc">
+<td>10000000</td>
+<td>Mark</td>
+<td>1/1</td>
+<td>1.6 kHz</td>
+<td>3 phone numbers</td>
+<td>It took this long to enter chris and greg's data</td>
+<td></td>
+<td></td>
+<td>-Dbrain -fslow-math</td>
+<td></td>
+<td>2006-01-18</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+</tbody>
+
+<tfoot>
+<tr class="header">
+<td><b>rpict</b> time<br>(user)</td>
+<td>Processor</td>
+<td><b>Total</b><br>CPUs/<br>cores</td>
+<td>Clock speed</td>
+<td>Cache/<br>proc</td>
+<td>OS/kernel</td>
+<td>Radiance Version</td>
+<td>Compiler</td>
+<td>Compile options</td>
+<td>Results</td>
+<td>Date</td>
+<td>Submitter</td>
+</tr>
+</tfoot>
+
+</table>
+<p>
+
+<a name="smp_results">
+<h4>SMP Benchmark Results</h4>
+Note: Reported time is either "real" from "time" command or elapsed/wall clock time--whichever can more accurately report the time elapsed between starting the rpiece and finishing it. Most systems do not reliably report multiprocess times, so accuracy of these results is the responsiblity of the submitter.<p>
+
+<table id="table_id_smp" class="display compact" border="0" cellpadding="3" valign="top">
+
+<thead>
+<tr class="header">
+<td><b>Time</b><br>(elapsed)</td>
+<td>Processor</td>
+<td><b>Threads used</b>;<br>(R x C)</td>
+<td><b>Total</b><br>CPUs/<br>cores</td>
+<td>Clock speed</td>
+<td>Cache/<br>proc</td>
+<td>OS/kernel</td>
+<td>Radiance<br>Version</td>
+<td>Compiler</td>
+<td>Compile options</td>
+<td>Date</td>
+<td>Submitter</td>
+</tr>
+</thead>
+
+<tfoot>
+<tr class="header">
+<td><b>Time</b><br>(elapsed)</td>
+<td>Processor</td>
+<td><b>Threads used</b>;<br>(R x C)</td>
+<td><b>Total</b><br>CPUs/<br>cores</td>
+<td>Clock speed</td>
+<td>Cache/<br>proc</td>
+<td>OS/kernel</td>
+<td>Radiance<br>Version</td>
+<td>Compiler</td>
+<td>Compile options</td>
+<td>Date</td>
+<td>Submitter</td>
+</tr>
+</tfoot>
+
+<tbody>
+
+<tr class="intel">
+<td>144.04</td>
+<td>Intel i7-5960X</td>
+<td>16<br>(64x1)</td>
+<td>1/8</td>
+<td>4.5 GHz (OC)
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>160.32</td>
+<td>Intel Xeon E5-2670</td>
+<td>32<br>(64x1)</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.8.3</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>2015-01-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>162.72</td>
+<td>Intel Xeon E5-2670</td>
+<td>16<br>(64x1)</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -march=native</td>
+<td>2015-01-09</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>162.93</td>
+<td>Intel i7-5960X</td>
+<td>8<br>(64x1)</td>
+<td>1/8</td>
+<td>4.5 GHz (OC)
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>164.62</td>
+<td>Intel Xeon E5-2670</td>
+<td>16<br>(64x1)</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.8.3</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>2015-01-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>167.28</td>
+<td>Intel Xeon E5-2670</td>
+<td>32<br>(64x1)</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.4.7</td>
+<td>-O2 -funroll-loops -ffast-math</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>170.51</td>
+<td>Intel Xeon E5-2670</td>
+<td>16<br>(64x1)</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>RHEL 6.5<br>2.6.32-358.18.1.el6.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.4.7</td>
+<td>-O2 -funroll-loops -ffast-math</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>250.01</td>
+<td>Intel Core i7-3770K</td>
+<td>8 (64x1)</td>
+<td>1/4</td>
+<td>4.2/4.7 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2a (64bit official NREL build)</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>2014-11-16</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>204.05</td>
+<td>Intel Core i7-4790K</td>
+<td>8 (64x1)</td>
+<td>1/4</td>
+<td>4.6/4.6 GHz (OC)</td>
+<td>8 MB</td>
+<td>Ubuntu Server 14.04 </td>
+<td>4.2a (64bit official NREL build)</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>2014-11-17</td>
+<td>Yi</td>
+</tr>
+
+<tr class="intel">
+<td>179.45</td>
+<td>Intel Xeon E5-2670<br>EC2 cc2.8xlarge</td>
+<td>32<br>(64x1)</td>
+<td>2/16</td>
+<td>2.6 GHz</td>
+<td>20 MB</td>
+<td>Ubuntu<br>3.8.0-19-generic</td>
+<td>4.2a</td>
+<td>gcc 4.7.3</td>
+<td>-O2 -mtune=native -march=native</td>
+<td>2013-08-06</td>
+<td>jack</td>
+</tr>
+
+<tr class="intel">
+<td>197.37</td>
+<td>Intel i7-5960X</td>
+<td>16<br>(64x1)</td>
+<td>1/8</td>
+<td>3.2 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>199.18</td>
+<td>Intel i7-5960X</td>
+<td>16<br>(64x1)</td>
+<td>1/8</td>
+<td>3.3 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-O2</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>199.34</td>
+<td>Intel i7-5960X</td>
+<td>12<br>(64x1)</td>
+<td>1/8</td>
+<td>3.2 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>205.40</td>
+<td>Intel i7-5960X</td>
+<td>8<br>(64x1)</td>
+<td>1/8</td>
+<td>3.2 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>206.92</td>
+<td>Intel Xeon E5-2630L</td>
+<td>24<br>(64x1)</td>
+<td>2/12</td>
+<td>2.0 GHz</td>
+<td>15 MB</td>
+<td>Fedora 18<br>3.6.10-4.fc18</td>
+<td>4.2a<br>2013-02-04</td>
+<td>gcc 4.7.2</td>
+<td>-march=corei7 -Ofast</td>
+<td>2013-02-08</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>210.01</td>
+<td>Intel Xeon X5670</td>
+<td>12<br>(64x1)</td>
+<td>1/12</td>
+<td>2.93 GHz</td>
+<td>12 MB</td>
+<td>Centos 5.5<br>2.6.28</td>
+<td>4.2a<br>2013-05-16</td>
+<td>gcc 4.4</td>
+<td>-O3</td>
+<td>2013-05-17</td>
+<td>lars</td>
+</tr>
+
+<tr class="intel">
+<td>217.52</td>
+<td>Intel Xeon E5-2630L</td>
+<td>12<br>(64x1)</td>
+<td>2/12</td>
+<td>2.0 GHz</td>
+<td>15 MB</td>
+<td>Fedora 18<br>3.6.10-4.fc18</td>
+<td>4.2a<br>2013-02-04</td>
+<td>gcc 4.7.2</td>
+<td>-march=corei7 -Ofast</td>
+<td>2013-02-08</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>220.30</td>
+<td>Intel i7-5960X</td>
+<td>8<br>(64x1)</td>
+<td>1/8</td>
+<td>3.3 GHz</td>
+<td>20 MB</td>
+<td>Fedora 21<br>3.17.8-300.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-O2</td>
+<td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>242.77</td>
+<td>Intel Core i7-4771</td>
+<td>8<br>(64x1)</td>
+<td>1/4</td>
+<td>3.5/3.9 GHz</td>
+<td>8 MB</td>
+<td>Fedora 20 Alpha</td>
+<td>4.2a<br>2013-09-25</td>
+<td>gcc 4.7.3</td>
+<td>-march=core-avx2 -mno-avx -mno-avx2 -Ofast</td>
+<td>2013-11-04</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="intel">
+<td>248.13</td>
+<td>Intel Xeon X5650</td>
+<td>12<br>(64x1)</td>
+<td>2/12</td>
+<td>2.66 GHz</td>
+<td>12 MB</td>
+<td>Red Hat 5.6<br>2.6.18-238.5.1.el5</td>
+<td>4.2a<br>2012-05-30</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-05-31</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>255.40</td>
+<td>Intel Xeon X5650</td>
+<td>12<br>(128x1)</td>
+<td>2/12</td>
+<td>2.66 GHz</td>
+<td>12 MB</td>
+<td>Red Hat 5.6<br>2.6.18-238.5.1.el5</td>
+<td>4.2a<br>2012-05-30</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-05-31</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>270.66</td>
+<td>Intel Core i7-4771</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>3.5/3.9 GHz</td>
+<td>8 MB</td>
+<td>Fedora 20 Alpha</td>
+<td>4.2a<br>2013-09-25</td>
+<td>gcc 4.7.3</td>
+<td>-march=core-avx2 -mno-avx -mno-avx2 -Ofast</td>
+<td>2013-11-04</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="intel">
+<td>286.27</td>
+<td>MacBook Pro<br>Intel i7-3615QM</td>
+<td>8<br>(64x1)</td>
+<td>1/4</td>
+<td>2.3/3.3 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.8.2</td>
+<td>4.1<br>official</td>
+<td>gcc 4.7.2</td>
+<td>-march=corei7 -Ofast</td>
+<td>2012-12-02</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="intel">
+<td>289.34</td>
+<td>Intel Xeon X5650</td>
+<td>12<br>(256x1)</td>
+<td>2/12</td>
+<td>2.66 GHz</td>
+<td>12 MB</td>
+<td>Red Hat 5.6<br>2.6.18-238.5.1.el5</td>
+<td>4.2a<br>2012-05-30</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-05-31</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>292.15</td>
+<td>Intel Xeon W3690</td>
+<td>6<br>(64x1)</td>
+<td>1/6</td>
+<td>3.47 GHz</td>
+<td>12 MB</td>
+<td>CentOS 5.0<br>2.6.32-71.7.1.el6.x86_64</td>
+<td>4.0<br>9 Aug 2011</td>
+<td>gcc 4.4.4<br>20100726</td>
+<td>-O3</td>
+<td>2011-08-09</td>
+<td>axel</td>
+</tr>
+
+<tr class="amd">
+<td>332.7</td>
+<td>AMD Opteron 8384 "Shanghai"</td>
+<td>8<br>(70x1)</td>
+<td>2/8</td>
+<td>2.7 GHz</td>
+<td>6 MB</td>
+<td>Solaris 10u9</td>
+<td>4.0</td>
+<td>Oracle/Sun Studio 12.2</td>
+<td>-fast -m64 -xtarget=native -xunroll=9 -xmodel=medium -xstrconst -lm
+-lmopt</td>
+<td>2010-12-28</td>
+<td>james</td>
+</tr>
+
+<tr class="intel">
+<td>342.13</td>
+<td>MacBook Pro<br>Intel i7-3615QM</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.3/3.3 GHz</td>
+<td>6 MB</td>
+<td>OSX 10.8.2</td>
+<td>4.1<br>official</td>
+<td>gcc 4.7.2</td>
+<td>-march=corei7 -Ofast</td>
+<td>2012-12-02</td>
+<td>chris b.</td>
+</tr>
+
+<tr class="amd">
+<td>382.01</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(64x1)</td>
+<td>1/6</td>
+<td>3.2 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -Ofast</td>
+<td>2013-12-10</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>389.60</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(64x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>2010-08-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>392.02</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(32x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>2010-08-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>393.2</td>
+<td>Intel Xeon X5355</td>
+<td>8<br>(64x1)</td>
+<td>2/8</td>
+<td>2.66 GHz</td>
+<td>8 MB</td>
+<td>SunOS 5.10<br>Update 4</td>
+<td>3.8</td>
+<td>Sun Studio 12</td>
+<td>-fast -xtarget=opteron -m64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>2008-03-29</td>
+<td>angelo &amp;<br>james</td>
+</tr>
+
+<tr class="amd">
+<td>393.48</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(64x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.34.8-68.fc13</td>
+<td>4.1a<br>2011-03-24</td>
+<td>gcc 4.4.5<br>20101112</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>2011-03-24</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>395.19</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(32x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O2 -ffast-math -funroll-loops<br>(SATA II disk)</td>
+<td>2010-08-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>395.81</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(64x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.34.7-61.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.5<br>20101112</td>
+<td>-O2 -ffast-math -funroll-loops<br>(SATA II disk)</td>
+<td>2010-12-01</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>398.18</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(64x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.34.8-68.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.5<br>20101112</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>2011-03-24</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>410.32</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(32x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.16.6-200.fc20.x86_64</td>
+<td>4.2 official<br>2014-07-31</td>
+<td>gcc 4.8.3</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>411.85</td>
+<td>AMD Phenom II X6 1090T</td>
+<td>6<br>(32x1)</td>
+<td>1/6</td>
+<td>3.61 GHz</td>
+<td>6 MB</td>
+<td>Fedora 13<br>2.6.33.6-147.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O2 -ffast-math -funroll-loops<br>(USB 2.0 disk)</td>
+<td>2010-07-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>424.70</td>
+<td>Intel Xeon E3.1225</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 5.4<br>2.6.18-164.el5</td>
+<td>4.1<br>official</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-01-23</td>
+<td>mstock</td>
+</tr>
+
+
+<tr class="intel">
+<td>424.99</td>
+<td>Intel Xeon E3.1225</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-103.ELsmp</td>
+<td>4.1<br>official</td>
+<td>icc v12u7</td>
+<td>-O3 -xHost -funroll-loops</td>
+<td>2012-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>432.72</td>
+<td>Intel Xeon E3.1225</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-103.ELsmp</td>
+<td>4.1<br>official</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-01-05</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>438.01</td>
+<td>Macintosh Quad Core Intel Xeon</td>
+<td>8<br>(8x8)</td>
+<td>2/8</td>
+<td>2.53 GHz</td>
+<td>12 MB</td>
+<td>OS X 10.5.2</td>
+<td>3.8</td>
+<td>precompiled</td>
+<td>-O2, <a href="http://markjstock.org/radmisc/jelle_080320_smp.png">image</a></td>
+<td>2008-03-20</td>
+<td>jelle</td>
+</tr>
+
+<tr class="intel">
+<td>468.27</td>
+<td>Macintosh Quad Core Intel Xeon</td>
+<td>8<br>(16x16)</td>
+<td>2/8</td>
+<td>2.8 GHz</td>
+<td>12 MB</td>
+<td>OS X 10.5.2</td>
+<td>3.8</td>
+<td>gcc 4.0.1</td>
+<td>-O2</a></td>
+<td>2008-04-17</td>
+<td>jm</td>
+</tr>
+
+<tr class="intel">
+<td>468.67</td>
+<td>Intel Xeon X5650</td>
+<td>6<br>(256x1)</td>
+<td>2/12</td>
+<td>2.66 GHz</td>
+<td>12 MB</td>
+<td>Red Hat 5.6<br>2.6.18-238.5.1.el5</td>
+<td>4.2a<br>2012-05-30</td>
+<td>gcc 4.1.2<br>20080704</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-05-31</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>484.45</td>
+<td>Intel i5-760</td>
+<td>4<br>(32x1)</td>
+<td>1/4</td>
+<td>2.8 GHz (3.46)</td>
+<td>8 MB</td>
+<td>Fedora 14 alpha<br>2.6.35</td>
+<td>4.0<br>2010-03-12</td>
+<td>gcc 4.4.4 20100630</td>
+<td>-O3 -march=core2 -mcx16 -msahf -msse4.1 -ffast-math</td>
+<td>2010-10-19</td>
+<td>chris</td>
+</tr>
+
+<tr class="intel">
+<td>493.13</td>
+<td>Macintosh Quad Core Intel Xeon</td>
+<td>8<br>(8x8)</td>
+<td>2/8</td>
+<td>2.8 GHz</td>
+<td>12 MB</td>
+<td>OS X 10.5.2</td>
+<td>3.8</td>
+<td>gcc 4.0.1</td>
+<td>-O2</a></td>
+<td>2008-04-17</td>
+<td>jm</td>
+</tr>
+
+<tr class="amd">
+<td>501</td>
+<td>AMD Opteron</td>
+<td>8<br>(70x1)</td>
+<td>4/8</td>
+<td>2.2 GHz</td>
+<td>1 MB L2</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>2006-12-17</td>
+<td>james</td>
+</tr>
+
+<tr class="intel">
+<td>514.92</td>
+<td>Intel Xeon E3.1225</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>3.1 GHz</td>
+<td>6 MB</td>
+<td>Red Hat 4.8<br>2.6.9-89.ELsmp</td>
+<td>4.1<br>official</td>
+<td>gcc 3.4.6<br>20060404</td>
+<td>-O2 -msse -msse2 -funroll-loops</td>
+<td>2012-01-04</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>520.32</td>
+<td>AMD Phenom II X4 965BE</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>3.4 GHz</td>
+<td>6 MB</td>
+<td>Ubuntu 12.04 LTS<br>3.2.0-33-generic</td>
+<td>4R0+20110410-1build1</td>
+<td>gcc 4.6.3</td>
+<td>[ubuntu package]</td>
+<td>2012-11-20</td>
+<td>jimbo</td>
+</tr>
+
+<tr class="amd">
+<td>534.5</td>
+<td>AMD Opteron 152</td>
+<td>8<br>(256x1)</td>
+<td>4/8</td>
+<td>2.613 GHz</td>
+<td>1 MB</td>
+<td>Solaris 10</td>
+<td>3.8</td>
+<td>Sun Studio 11</td>
+<td>-fast -xtarget=opteron -xarch=amd64 -xmodel=medium -xstrconst, <a href="#n2">note 2</a></td>
+<td>2006-12-16</td>
+<td>dclarke</td>
+</tr>
+
+<tr class="amd">
+<td>619.33</td>
+<td>AMD A10-7850K</td>
+<td>4<br>(64x1)</td>
+<td>1/2(4)</td>
+<td>3.7/4.0 GHz</td>
+<td>4 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -mno-avx -mno-avx2 -Ofast</td>
+<td>2014-01-26</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>664.24</td>
+<td>AMD A8-6600K</td>
+<td>4<br>(64x1)</td>
+<td>1/2(4)</td>
+<td>3.9/4.2 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -mno-avx -Ofast</td>
+<td>2013-12-10</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>700.87</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 16<br>3.3.0-8.fc16.x86_64</td>
+<td>4.2a Apr 5 2012</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>2012-04-07</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>725.16</td>
+<td>Intel Core i7 920</td>
+<td>8<br>(64x1)</td>
+<td>1/4</td>
+<td>2.666 GHz</td>
+<td>8 MB</td>
+<td>Fedora 14 alpha<br>2.6.35</td>
+<td>4.0<br>20100312</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=core2 -mcx16 -msahf -msse4.1 -O3 -ffast-math</td>
+<td>2010-08-24</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="amd">
+<td>748.51</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 13<br>2.6.34.6-47.fc13</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=native -O2 -ffast-math -funroll-loops</td>
+<td>2010-09-01</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>775.3</td>
+<td>AMD Opteron 2218 HE<br>&quot;Santa Rosa&quot;</td>
+<td>4<br>(70x1)</td>
+<td>2/4</td>
+<td>2.6 GHz</td>
+<td>2 x 1 MB</td>
+<td>Solaris 10u9</td>
+<td>4.0</td>
+<td>Oracle/Sun Studio 12.1</td>
+<td>-fast -m64 -xtarget=generic -xunroll=9 -xmodel=medium -xstrconst -lm
+-lmopt</td>
+<td>2011-03-22</td>
+<td>james</td>
+</tr>
+
+<tr class="intel">
+<td>778.51</td>
+<td>Intel Core i7 920</td>
+<td>4<br>(32x1)</td>
+<td>1/4</td>
+<td>2.666 GHz</td>
+<td>8 MB</td>
+<td>Fedora 14 alpha<br>2.6.35</td>
+<td>4.0<br>20100312</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-march=core2 -mcx16 -msahf -msse4.1 -O3 -ffast-math</td>
+<td>2010-08-24</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="amd">
+<td>785.65</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 20<br>3.12.6-300.fc20.x86_64</td>
+<td>4.2 official<br>2014-07-31</td>
+<td>gcc 4.8.2</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>817.41</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 12<br>2.6.32.16-141.fc12</td>
+<td>4.0<br>2010-04-27</td>
+<td>gcc 4.4.4<br>20100630</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2010-07-14</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>872.57</td>
+<td>Intel i5-2410M</td>
+<td>4<br>(64x1)</td>
+<td>2/4</td>
+<td>2.30 GHz</td>
+<td>3 MB L3</td>
+<td>LinuxMint<br>2.6.38-8-generic-pae</td>
+<td>4R0<br>20100729</td>
+<td>gcc 4.5.2</td>
+<td>[Debian package]</td>
+<td>2011-08-16</td>
+<td>eryd</td>
+</tr>
+
+<tr class="amd">
+<td>873.82</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.5-85.fc8</td>
+<td>3.8</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 -ffast-math -funroll-loops -m64</td>
+<td>2008-05-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>876.30</td>
+<td>Macintosh Dual Core Intel Xeon</td>
+<td>4</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>4 MB</td>
+<td>OS X 10.4.8</td>
+<td>3.8</td>
+<td>precompiled</td>
+<td>-O2</td>
+<td>2006-11-22</td>
+<td>kirk</td>
+</tr>
+
+<tr class="amd">
+<td>881.12</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 20<br>3.12.6-300.fc20.x86_64</td>
+<td>4.2a<br>2013-09-03</td>
+<td>gcc 4.8.2</td>
+<td>-O2 -march=native -funroll-loops -ffast-math</td>
+<td>2015-01-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>887.75</td>
+<td>MacBookPro6,2<br>Intel i7-620m</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>2.67 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.6.3</td>
+<td>4.0a<br>2008-05-04</td>
+<td>i686-apple-darwin10-gcc-4.2.1</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2010-11-20</td>
+<td>markus</td>
+</tr>
+
+<tr class="intel">
+<td>897.24</td>
+<td>Macintosh Dual Core Intel Xeon</td>
+<td>4</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>4 MB</td>
+<td>OS X 10.4.8</td>
+<td>3.8</td>
+<td>gcc 4.0.1</td>
+<td>-O3 -fast</td>
+<td>2006-11-09</td>
+<td>matt</td>
+</tr>
+
+<tr class="amd">
+<td>899.85</td>
+<td>AMD Phenom 9850</td>
+<td>4<br>(64x1)</td>
+<td>1/4</td>
+<td>2.50 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.5-85.fc8</td>
+<td>3.9</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 -ffast-math -funroll-loops -m64</td>
+<td>2008-05-04</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>951.84</td>
+<td>Intel i5-2467M</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 21<br>3.18.3-201.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>2015-02-02</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>983.04</td>
+<td>AMD A8-6600K</td>
+<td>2<br>(64x1)</td>
+<td>1/2(4)</td>
+<td>3.9/4.2 GHz</td>
+<td>6 MB</td>
+<td>Fedora 20<br>3.11.10</td>
+<td>4.1<br>Official</td>
+<td>gcc 4.7.3</td>
+<td>-march=native -mno-avx -Ofast</td>
+<td>2013-12-10</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>1024.69</td>
+<td>AMD Phenom 9500</td>
+<td>4<br>(128x1)</td>
+<td>1/4</td>
+<td>2.20 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 -ffast-math -funroll-loops [TLB workaround disabled in BIOS]</td>
+<td>2008-04-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1039.52</td>
+<td>Intel i5-2467M</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 21<br>3.18.3-201.fc21.x86_64</td>
+<td>4.2<br>2014-07-31</td>
+<td>gcc 4.9.2</td>
+<td>-O2</td>
+<td>2015-02-02</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1041.27</td>
+<td>Intel Xeon</td>
+<td>8<br>(12x12)</td>
+<td>4/8</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Red Hat<br>2.6.9-34.0.2.ELsmp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.4.5<br>20051201</td>
+<td>-O2 -march=nocona -ffast-math -funroll-loops -fomit-frame-pointer, <a href="http://markjstock.org/radmisc/xeon_smpb_2006-08.png">image</a></td>
+<td>2006-08-23</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>1112.86</td>
+<td>MacBookPro6,2<br>Intel i7-620m</td>
+<td>2<br>(64x1)</td>
+<td>1/2</td>
+<td>2.67 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.6.3</td>
+<td>4.0a<br>2008-05-04</td>
+<td>i686-apple-darwin10-gcc-4.2.1</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2010-11-20</td>
+<td>markus</td>
+</tr>
+
+<tr class="intel">
+<td>1134.67</td>
+<td>Intel Xeon</td>
+<td>8<br>(8x8)</td>
+<td>4/8</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Red Hat<br>2.6.9-34.0.2.ELsmp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.4.5<br>20051201</td>
+<td>-O2, <a href="http://markjstock.org/radmisc/xeon_smp_2006-08.png">image</a></td>
+<td>2006-08-22</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>1147.03</td>
+<td>Intel i5-2467M</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 16<br>3.3.1-3.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>2012-04-11</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>1154.15</td>
+<td>AMD Phenom 9500</td>
+<td>4<br>(128x1)</td>
+<td>1/4</td>
+<td>2.20 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 [TLB workaround disabled in BIOS]</td>
+<td>2008-04-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1183.94</td>
+<td>Intel i5-2467M</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Ubuntu 12.10<br>3.5.0-18</td>
+<td>4.2a HEAD<br>2012-11-18</td>
+<td>gcc 4.7.2</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>2012-11-19</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1185.03</td>
+<td>Intel Intel Core2 Duo E8500</td>
+<td>2<br>(8x8)</td>
+<td>1/2</td>
+<td>3.16 GHz</td>
+<td>2x3 MB</td>
+<td>Fedora 10 preview x64<br>2.6.27.4</td>
+<td>4.0a</td>
+<td>gcc 4.3.2</td>
+<td>-march=native -O3 -ffast-math -funroll-loops</td>
+<td>2008-11-05</td>
+<td>chris<!--Christoph Breitkopf <chris at chr-breitkopf.de>--></td>
+</tr>
+
+<tr class="intel">
+<td>1242.14</td>
+<td>Intel Intel Core2 Duo E8400</td>
+<td>2<br>(8x8)</td>
+<td>1/2</td>
+<td>3.0 GHz</td>
+<td>2x3 MB</td>
+<td>Fedora 9 x64<br>2.6.25-3</td>
+<td>3.9</td>
+<td>gcc 4.3.0</td>
+<td>-O3</td>
+<td>2008-05-17</td>
+<td>axel<!--Axel Jacobs <a.jacobs at londonmet.ac.uk>--></td>
+</tr>
+
+<tr class="intel">
+<td>1267.21</td>
+<td>Intel Xeon</td>
+<td>8<br>(12x12)</td>
+<td>4/8</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Red Hat<br>2.6.9-34.0.2.ELsmp</td>
+<td>3.7.2b<br>22 Aug 2005</td>
+<td>gcc 3.4.5<br>20051201</td>
+<td>-O2</td>
+<td>2006-08-22</td>
+<td>mstock<!--Mark Stock <mstock at umich.edu>--></td>
+</tr>
+
+<tr class="intel">
+<td>1335.57</td>
+<td>Intel i5-2467M</td>
+<td>2<br>(64x1)</td>
+<td>1/2</td>
+<td>1.6 GHz (2.3)</td>
+<td>3 MB</td>
+<td>Fedora 16<br>3.3.1-3.fc16.x86_64</td>
+<td>4.2a<br>2012-04-05</td>
+<td>gcc 4.6.3<br>20120306</td>
+<td>-O2 -march=native -fomit-frame-pointer -funroll-loops -ffast-math</td>
+<td>2012-04-11</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1801.64</td>
+<td>Intel Core 2 Duo E6600</td>
+<td>2</td>
+<td>1/2</td>
+<td>2.44 GHz</td>
+<td>4 MB</td>
+<td>2.6.17.11-102.caos.smp</td>
+<td>3.8</td>
+<td>gcc 4.1.1</td>
+<td>-O3 -mtune=generic -mfpmath=sse -msse3 -ffast-math -funroll-loops</td>
+<td>2006-11-15</td>
+<td>visarc</td>
+</tr>
+
+<tr class="amd">
+<td>1863.14</td>
+<td>AMD Phenom 9600</td>
+<td>4<br>(8x8)</td>
+<td>1/4</td>
+<td>2.30 GHz</td>
+<td>512 kB L2</td>
+<td>Linux Mint 9<br>2.6.32-21 x86_64</td>
+<td>3.9<br>20100109</td>
+<td>DEB repository</td>
+<td>-O2</td>
+<td>2010-08-08</td>
+<td>dmaino<!--David Maino <dmaino at ideasi com>--></td>
+</tr>
+
+<tr class="intel">
+<td>1941.81</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>2<br>(64x1)</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.8</td>
+<td>4.1a<br>2010-11-20</td>
+<td>gcc 4.3.0<br>20071026</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2010-11-20</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1950.64</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>2<br>(128x1)</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.2</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.3.0</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2008-04-01</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1977.30</td>
+<td>MacBookPro3,1<br>Intel Core 2 Duo T7500</td>
+<td>2<br>(8x8)</td>
+<td>1/2</td>
+<td>2.20 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.5.2</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.3.0</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2008-04-01</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2046.43</td>
+<td>Intel Xeon</td>
+<td>4<br>(8x8)</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Ubuntu<br>2.6.17-11-generic #2 SMP x86_64</td>
+<td>3.8</td>
+<td>gcc 4.1.0</td>
+<td>-O2</td>
+<td>2007-03-08</td>
+<td>eryd<!--Ery Djunaedy <erydjunaedy@gmail.com>--></td>
+</tr>
+
+<tr class="amd">
+<td>2142.49</td>
+<td>AMD Phenom 9500</td>
+<td>4<br>(128x1)</td>
+<td>1/4</td>
+<td>2.20 GHz</td>
+<td>2 MB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8<br>2007-11-18</td>
+<td>gcc 4.1.2<br>20070925</td>
+<td>-O2 [TLB workaround enabled in BIOS]</td>
+<td>2008-04-03</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>2411.89</td>
+<td>Intel Core Duo U7300</td>
+<td>2<br>(64x1)</td>
+<td>1/2</td>
+<td>1.30 GHz</td>
+<td>3 MB</td>
+<td>ubuntu 10.4 LTS<br>2.6.32</td>
+<td>4.0a<br>2008-05-04</td>
+<td>gcc 4.4.3-4ubuntu5 2009</td>
+<td>-O2 -ffast-math -funroll-loops</td>
+<td>2010-11-20</td>
+<td>markus</td>
+</tr>
+
+<tr class="amd">
+<td>2424.17</td>
+<td>AMD Opteron 246</td>
+<td>2<br>(8x8)</td>
+<td>2/2</td>
+<td>2.0 GHz</td>
+<td>1 MB</td>
+<td>Fedora 8<br>2.6.24.4-64.fc8</td>
+<td>3.8</td>
+<td>gcc 4.3.0</td>
+<td>-march=native -O3 -ffast-math -funroll-loops</td>
+<td>2008-04-04</td>
+<td>chris</td>
+</tr>
+
+<tr class="amd">
+<td>2487.70</td>
+<td>AMD Athlon 64 X2 4200+</td>
+<td>2<br>(8x8)</td>
+<td>1/2</td>
+<td>2.21 GHz</td>
+<td>512 kB</td>
+<td>Fedora Core 5 x86_64<br>2.6.18-1.2257.fc5</td>
+<td>4.0a</td>
+<td>gcc 4.1.1 20070105</td>
+<td>-O2</td>
+<td>2008-11-12</td>
+<td>dmaino</td>
+</tr>
+
+<tr class="intel">
+<td>2688.92</td>
+<td>MacBookAir3,1<br>Intel Core 2 Duo SU9400</td>
+<td>2<br>(64x1)</td>
+<td>1/2</td>
+<td>1.4 GHz</td>
+<td>3 MB</td>
+<td>OS X 10.6.5</td>
+<td>4.1a<br>2010-10-20</td>
+<td>gcc 4.2.1</td>
+<td>-O2 -funroll-loops -ffast-math</td>
+<td>2010-12-27</td>
+<td>markus</td>
+</tr>
+
+<tr class="intel">
+<td>2766.05</td>
+<td>Macintosh Intel Core Duo</td>
+<td>2<br>(8x8)</td>
+<td>1/2</td>
+<td>1.83 GHz</td>
+<td>2 MB</td>
+<td>OS X 10.4.5</td>
+<td>3.8a</td>
+<td>gcc 4.0.1</td>
+<td>-fast</td>
+<td>2006-02-28</td>
+<td>rob<!--Rob Guglielmetti <rpg at rumblestrip.org>--></td>
+</tr>
+
+<tr class="amd">
+<td>3060.09</td>
+<td>AMD Fusion E-350</td>
+<td>2<br>(70x1)</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB L2</td>
+<td>Fedora 15<br>2.6.40-4.fc15.x86_64</td>
+<td>4.1a<br>24 Mar 2011</td>
+<td>gcc 4.6.0</td>
+<td>-O2</td>
+<td>2011-08-15</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>3266.62</td>
+<td>AMD Fusion E-350</td>
+<td>4<br>(70x1)</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB L2</td>
+<td>Fedora 15<br>2.6.40-4.fc15.x86_64</td>
+<td>4.1a<br>24 Mar 2011</td>
+<td>gcc 4.6.0</td>
+<td>-O2</td>
+<td>2011-08-15</td>
+<td>mstock</td>
+</tr>
+
+<tr class="amd">
+<td>3563.41</td>
+<td>AMD Phenom 9600</td>
+<td>2<br>(8x8)</td>
+<td>1/4</td>
+<td>2.30 GHz</td>
+<td>512 kB L2</td>
+<td>Linux Mint 9<br>2.6.32-21 x86_64</td>
+<td>3.9<br>20100109</td>
+<td>DEB repository</td>
+<td>-O2</td>
+<td>2010-08-08</td>
+<td>dmaino<!--David Maino <dmaino at ideasi com>--></td>
+</tr>
+
+<tr class="intel">
+<td>3926</td>
+<td>Intel Xeon</td>
+<td>2<br>(8x8)</td>
+<td>2/4</td>
+<td>2.66 GHz</td>
+<td>1 MB</td>
+<td>Ubuntu<br>2.6.17-11-generic #2 SMP x86_64</td>
+<td>3.8</td>
+<td>gcc 4.1.0</td>
+<td>-O2</td>
+<td>2007-03-08</td>
+<td>eryd<!--Ery Djunaedy <erydjunaedy@gmail.com>--></td>
+</tr>
+
+<tr class="intel">
+<td>5520</td>
+<td>Intel Atom 330</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB</td>
+<td>2.6.32.12-115.fc12.i686</td>
+<td>4.0<br>27 Apr 2010</td>
+<td>gcc 4.4.3<br>20100127</td>
+<td>-O2 -mtune=atom -pipe -fomit-frame-pointer -funroll-loops</td>
+<td>2010-07-06</td>
+<td>mstock</td>
+</tr>
+
+
+<tr class="intel">
+<td>5564</td>
+<td>Intel Atom 330</td>
+<td>4<br>(64x1)</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB</td>
+<td>2.6.32.12-115.fc12.i686</td>
+<td>4.0<br>27 Apr 2010</td>
+<td>gcc 4.4.3<br>20100127</td>
+<td>-O2</td>
+<td>2010-07-06</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>8186</td>
+<td>Intel Atom 330</td>
+<td>2<br>(64x1)</td>
+<td>1/2</td>
+<td>1.60 GHz</td>
+<td>512 kB</td>
+<td>2.6.32.12-115.fc12.i686</td>
+<td>4.0<br>27 Apr 2010</td>
+<td>gcc 4.4.3<br>20100127</td>
+<td>-O2</td>
+<td>2010-07-05</td>
+<td>mstock</td>
+</tr>
+
+</tbody></table>
+<p>
+
+</p><h4>Notes</h4>
+<table border="1" cellpadding="3">
+<tbody>
+<tr> <a name="n0"> <td>0</td>
+  <td>Thanks to Axel and Eleanor for page design help, and Yi for dynamic tables!</td>
+  </tr>
+<tr> <a name="n1"> <td>1</td>
+  <td>compile options are <em>-O3 -fgcse-sm -funroll-loops
+  -fstrict-aliasing -fsched-interblock -falign-loops=16 -falign-jumps=16
+  -falign-functions=16 -falign-jumps-max-skip=15
+  -falign-loops-max-skip=15 -ffast-math -freorder-blocks
+  -freorder-blocks-and-partition -finline-floor -mdynamic-no-pic
+  -mpowerpc-gpopt -force_cpusubtype_ALL -mtune=G5 -mcpu=G5 -mpowerpc64</em></td>
+  </tr>
+<tr> <a name="n2"> <td>2</td>
+  <td>Binaries from generic <a href="http://www.blastwave.org/packages/radiance">www.blastwave.org</a> package, isaexec is used by the package to run architecture specific binary.</td>
+  </tr>
+</tbody></table>
+<p>
+
+</p><hr><address>
+Page last modified 2014-12-01<br>
+Mark J. Stock, PhD, Aerospace Engineering, University of Michigan<br>
+</address>
+</body></html>
+

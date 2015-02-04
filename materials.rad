@@ -1,0 +1,22 @@
+# materials for benchmark4 scene
+
+void plastic ceilmat 0 0 5
+0.8 0.8 0.8  0.0 0.0
+
+void alias wallmat ceilmat
+
+void plastic mat 0 0 5
+0.9 0.9 0.9  0.0 0.0
+
+void plastic kickplatemat 0 0 5
+0.01 0.01 0.01  0.06 0.003
+
+void brightfunc dusty
+4 dirt dirt.cal -s 2
+0 1 .15
+
+dusty plastic floormat 0 0 5
+0.3 0.3 0.3  0.03 0.02
+
+# a perfect mirror
+void mirror mirrormat 0 0 3  1 1 1

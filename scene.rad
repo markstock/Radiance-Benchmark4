@@ -1,0 +1,11 @@
+# the sky definition
+!xform sky.rad
+
+# the surrounding building
+!xform unit.rad
+
+# insert some stuff inthe foreground
+!xform -s 1.2 -t 0 0.3 0.0 foreground.rad
+
+# and a persian rug which takes the place of the floor
+!xform -s 2 -rz 90 -t 1.5 -1 0 rug.rad

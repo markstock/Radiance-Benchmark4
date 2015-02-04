@@ -1,0 +1,7 @@
+!xform -a 2 -t 2 0 0 -a 2 -t 0 2 0 -a 2 -t 0 0 2 -i 1 -s 0.333333333 cube3f.rad
+!xform -t 0 1 1 -s 0.333333333 cube3f.rad
+!xform -t 1 0 1 -s 0.333333333 cube3f.rad
+!xform -t 1 1 0 -s 0.333333333 cube3f.rad
+!xform -t 2 1 1 -s 0.333333333 cube3f.rad
+!xform -t 1 2 1 -s 0.333333333 cube3f.rad
+!xform -t 1 1 2 -s 0.333333333 cube3f.rad

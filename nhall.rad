@@ -1,0 +1,70 @@
+# xform -rz 90
+# the east hallway out of a rectangular intersection
+
+floormat polygon qfloor
+0
+0
+12
+                  1.5              1.0                  0
+                  1.5               10                  0
+                 -1.5               10                  0
+                 -1.5              1.0                  0
+
+kickplatemat polygon nplate
+0
+0
+12
+                 -1.5              1.0                  0
+                 -1.5               10                  0
+                 -1.5               10                0.1
+                 -1.5              1.0                0.1
+
+wallmat polygon nwall
+0
+0
+12
+                 -1.5              1.0                0.1
+                 -1.5               10                0.1
+                 -1.5               10                2.5
+                 -1.5              1.0                2.5
+
+kickplatemat polygon splate
+0
+0
+12
+                  1.5              1.0                0.1
+                  1.5               10                0.1
+                  1.5               10                  0
+                  1.5              1.0                  0
+
+wallmat polygon swall
+0
+0
+12
+                  1.5              1.0                2.5
+                  1.5               10                2.5
+                  1.5               10                0.1
+                  1.5              1.0                0.1
+
+ceilmat polygon ceiling
+0
+0
+12
+                 -1.5              1.0                2.5
+                 -1.5               10                2.5
+                  1.5               10                2.5
+                  1.5              1.0                2.5
+
+mirrormat polygon ewall
+0
+0
+12
+                 -1.5               10                  0
+                  1.5               10                  0
+                  1.5               10                2.5
+                 -1.5               10                2.5
+
+!xform -rz 90 -t 1.5 4 0 fixture.rad
+!xform -rz 90 -t 1.5 8 0 fixture.rad
+!xform -rz 270 -t -1.5 4 0 fixture.rad
+!xform -rz 270 -t -1.5 8 0 fixture.rad

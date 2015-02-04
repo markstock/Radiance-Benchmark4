@@ -1,0 +1,33 @@
+# the east hallway out of a rectangular intersection
+
+floormat polygon qfloor 0 0 12
+1.5 -1 0  10 -1 0  10 1 0  1.5 1 0
+
+kickplatemat polygon nplate 0 0 12
+1.5 1 0  10 1 0  10 1 0.1  1.5 1 0.1
+
+wallmat polygon nwall 0 0 12
+1.5 1 0.1  10 1 0.1  10 1 2.5  1.5 1 2.5
+
+kickplatemat polygon splate 0 0 12
+1.5 -1 0.1  10 -1 0.1  10 -1 0  1.5 -1 0
+
+wallmat polygon swall 0 0 12
+1.5 -1 2.5  10 -1 2.5  10 -1 0.1  1.5 -1 0.1
+
+ceilmat polygon ceiling 0 0 12
+1.5 1 2.5  10 1 2.5  10 -1 2.5  1.5 -1 2.5
+
+mirrormat polygon ewall 0 0 12
+10 1 0  10 -1 0  10 -1 2.5  10 1 2.5
+
+# the light fixtures
+#!xform -t 7.5 -1 0 fixture.rad
+#!xform -rz 180 -t 7.5 1 0 fixture.rad
+#!xform -t 8 0 0 fixture.rad
+#!xform -t 4 0 0 fixture.rad
+!xform -t 8 -1 0 fixture.rad
+!xform -t 4 -1 0 fixture.rad
+!xform -rz 180 -t 8 1 0 fixture.rad
+!xform -rz 180 -t 4 1 0 fixture.rad
+

@@ -1,0 +1,18 @@
+# a procedural set of nested cubes
+
+wallmat instance thecubes
+5 cube4f_instance.oct -t -0.5 -0.5 0
+0 0
+
+
+# a lens
+
+!xform -s 0.6 -rx 75 -rz 25 -t 0.5 -0.6 0.58 lens.rad
+
+# a metal sphere
+
+void metal msc
+0 0 5  0.03 0.05 0.25  0.8 0.06
+
+msc sphere thesphere
+0 0 4  -0.7 0.2 0.41  0.41

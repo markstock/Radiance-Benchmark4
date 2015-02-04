@@ -1,0 +1,20 @@
+# a persian carpet (Sarug carpet, Arak region)
+# image from http://persia.org/Images/Persian_Carpet/saruq_jpg1.html
+# must use mixpict to mask and colorpict for image
+
+void colorpict carpetcolor
+7 red green blue rug.pic picture.cal pic_u pic_v
+0
+0
+
+carpetcolor plastic carpetmat
+0 0 5  0.4 0.4 0.4 0 0
+
+void mixpict carpet
+7 carpetmat floormat green rug_mask.pic picture.cal pic_u pic_v
+0
+0
+
+carpet polygon thecarpet
+0 0 12
+0 0 0  1 0 0  1 1.5 0  0 1.5 0
