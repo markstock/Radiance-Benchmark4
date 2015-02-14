@@ -53,7 +53,6 @@ Then, continue with the data collection:
          "sysctl -n machdep.cpu.brand_string" for OSX
       * cache RAM (main RAM isn't important)
          "cat /proc/cpuinfo" for some Linux flavors for cache memory size
-         "top" and read the header lines for main memory size
       * operating system name
          "uname -a" for some Unixes
       * radiance version
