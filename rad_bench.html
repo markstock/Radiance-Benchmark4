@@ -54,10 +54,13 @@ though it may be exteneded to support workstation clusters in the future.
     distribution on the machine you wish to benchmark.
     Download the Radiance distribution from the "download
     Radiance" page of the <a href="http://www.radiance-online.org/"> Radiance Online</a> site.<p>
-</li><li>Download <a href="http://markjstock.org/radmisc/bench4.zip">bench4.zip</a> and run 
+</li>
+<li>Download <a href="http://markjstock.org/radmisc/bench4.zip">bench4.zip</a> and run 
     <pre>unzip bench4.zip</pre>
     to create the <em>bench4</em> directory.<p>
-</li><li>The complete instructions are in the <em>README</em> file.
+    OR, go to the <a href="https://github.com/markstock/Radiance-Benchmark4">Radiance Benchmark github page</a> and clone the repository.<p>
+</li>
+<li>The complete instructions are in the <em>README</em> file.
     Most users just need to run
     <pre>make</pre>
     and read the results at the end of the output.
@@ -65,7 +68,8 @@ though it may be exteneded to support workstation clusters in the future.
     <pre>NCPU=2; make smp</pre>
     <pre>export NCPU=2; make smp</pre>
     to run the benchmark on two available CPUs.
-</li></ol>
+</li>
+</ol>
 
 <h4>Parallel tests</h4>
 <p>
@@ -451,6 +455,21 @@ SMP results that you may have and they will be posted at the
 <td>rays</td>
 <td>2011-08-23</td>
 <td>guy</td>
+</tr>
+
+<tr class="intel">
+<td>1351.41</td>
+<td>Intel i7-5650U</td>
+<td>1/2</td>
+<td>2.2/3.2 GHz</td>
+<td>4 MB</td>
+<td>OSX 10.10.2</td>
+<td>4.3a</td>
+<td>Apple LLVM 6.0<br>clang-600.0.57</td>
+<td></td>
+<td>568011353 rays</td>
+<td>2015-03-28</td>
+<td>Joe S.</td>
 </tr>
 
 <tr class="intel">
