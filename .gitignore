@@ -3,7 +3,7 @@ cube2f_instance.oct
 cube4f_instance.oct
 lens.msh
 optionsUnix
-perf_tp
+perf*
 scene.oct
 smp.amb
 smp.pic
