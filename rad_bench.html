@@ -55,10 +55,7 @@ though it may be exteneded to support workstation clusters in the future.
     Download the Radiance distribution from the "download
     Radiance" page of the <a href="http://www.radiance-online.org/"> Radiance Online</a> site.<p>
 </li>
-<li>Download <a href="http://markjstock.org/radmisc/bench4.zip">bench4.zip</a> and run 
-    <pre>unzip bench4.zip</pre>
-    to create the <em>bench4</em> directory.<p>
-    OR, go to the <a href="https://github.com/markstock/Radiance-Benchmark4">Radiance Benchmark github page</a> and clone the repository.<p>
+<li>Go to the <a href="https://github.com/markstock/Radiance-Benchmark4">Radiance Benchmark github page</a> and clone the repository locally.<p>
 </li>
 <li>The complete instructions are in the <em>README</em> file.
     Most users just need to run
@@ -69,6 +66,7 @@ though it may be exteneded to support workstation clusters in the future.
     <pre>export NCPU=2; make smp</pre>
     to run the benchmark on two available CPUs.
 </li>
+<li>Edit the <pre>rad_bench.html</pre> file and either e-mail it to me or submit a pull request. Thank you for contributing!
 </ol>
 
 <h4>Parallel tests</h4>
@@ -289,6 +287,21 @@ SMP results that you may have and they will be posted at the
 <td>-Ofast -funroll-loops -march=native</td>
 <td>576466325 rays</td>
 <td>2015-01-18</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>796.15</td>
+<td>Intel i7-5960X</td>
+<td>1/8</td>
+<td>4.4 GHz (OC)</td>
+<td>20 MB</td>
+<td>Fedora 25<br>4.8.10-300.fc25.x86_64</td>
+<td>5R0 Official</td>
+<td>gcc 6.2.1</td>
+<td>-Ofast -funroll-loops -march=native</td>
+<td>576555904 rays</td>
+<td>2017-03-17</td>
 <td>mstock</td>
 </tr>
 
@@ -574,6 +587,21 @@ SMP results that you may have and they will be posted at the
 <td>-O2 -msse -msse2 -funroll-loops</td>
 <td>691916359 rays</td>
 <td>2013-02-08</td>
+<td>mstock</td>
+</tr>
+
+<tr class="intel">
+<td>1490.55</td>
+<td>Intel i7-5960X</td>
+<td>1/8</td>
+<td>4.4 GHz (OC)</td>
+<td>20 MB</td>
+<td>Fedora 25<br>4.8.10-300.fc25.x86_64</td>
+<td>5R0 Official</td>
+<td>gcc 6.2.1</td>
+<td>-O2</td>
+<td>566112818 rays</td>
+<td>2017-03-17</td>
 <td>mstock</td>
 </tr>
 
@@ -4720,8 +4748,7 @@ Note: Reported time is either "real" from "time" command or elapsed/wall clock t
 <p>
 
 </p><hr><address>
-Page last modified 2014-12-01<br>
-Mark J. Stock, PhD, Aerospace Engineering, University of Michigan<br>
+Page compiled by Mark J. Stock<br>
 </address>
 </body></html>
 
