@@ -8,4 +8,6 @@ scene.oct
 smp.amb
 smp.pic
 smp.ppm
-smp.unf
+serial.unf
+serial.pic
+serial.ppm
