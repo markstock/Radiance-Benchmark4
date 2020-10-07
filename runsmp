@@ -1,8 +1,23 @@
 #!/bin/sh
 
+check2n(){
+case $2 in 
+	1|2|4|8|16|32|64|128|256|512|1024|2048)
+        ;;
+
+    *)
+        echo "bad value of $1, it must be 2^n"
+        exit 1
+    ;;
+esac
+}
+
 [ -z "$NCPU" ] && NCPU=4
 [ -z "$COLS" ] && COLS=1
 [ -z "$ROWS" ] && ROWS=64
+
+check2n COLS $COLS
+check2n ROWS $ROWS
 
 echo $COLS $ROWS > syncfile
 rm -f pp
